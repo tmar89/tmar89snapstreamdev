@@ -1,0 +1,16 @@
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\bin\Release\PluginMovieTagger.dll
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\bin\Release\PluginMovieTagger.pdb
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\bin\Release\BTVShowInfoPluginInterface.dll
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\bin\Release\BTVShowInfoPluginInterface.pdb
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\bin\Release\BTVShowInfoPluginInterface.xml
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\obj\Release\PluginMovieTagger.dll
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\obj\Release\PluginMovieTagger.pdb
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\bin\Debug\PluginMovieTagger.dll
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\bin\Debug\PluginMovieTagger.pdb
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\bin\Debug\BTVShowInfoPluginInterface.dll
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\bin\Debug\BTVShowInfoPluginInterface.pdb
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\bin\Debug\BTVShowInfoPluginInterface.xml
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\obj\Debug\PluginMovieTagger.dll
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\obj\Debug\PluginMovieTagger.pdb

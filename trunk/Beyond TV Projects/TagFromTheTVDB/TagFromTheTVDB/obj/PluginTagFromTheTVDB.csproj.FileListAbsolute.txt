@@ -1,0 +1,16 @@
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Release\PluginTagFromTheTVDB.dll
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Release\PluginTagFromTheTVDB.pdb
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Release\BTVShowInfoPluginInterface.dll
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Release\BTVShowInfoPluginInterface.pdb
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Release\BTVShowInfoPluginInterface.xml
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\obj\Release\PluginTagFromTheTVDB.dll
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\obj\Release\PluginTagFromTheTVDB.pdb
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Debug\PluginTagFromTheTVDB.dll
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Debug\PluginTagFromTheTVDB.pdb
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Debug\BTVShowInfoPluginInterface.dll
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Debug\BTVShowInfoPluginInterface.pdb
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Debug\BTVShowInfoPluginInterface.xml
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\obj\Debug\PluginTagFromTheTVDB.dll
+C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\obj\Debug\PluginTagFromTheTVDB.pdb

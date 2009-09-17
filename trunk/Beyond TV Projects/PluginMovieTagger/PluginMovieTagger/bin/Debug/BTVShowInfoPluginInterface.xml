@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BTVShowInfoPluginInterface</name>
+    </assembly>
+    <members>	
+        <member name="T:ThoughtLabs.BTVShowInfo.PluginInterface.IShowInfoEditor">
+            <summary>
+            Interface plugins implement
+            </summary>
+        </member>
+        <member name="M:ThoughtLabs.BTVShowInfo.PluginInterface.IShowInfoEditor.Initialize(ThoughtLabs.BTVShowInfo.PluginInterface.IPluginHost)">
+            <summary>
+            Called after the plugin is loaded
+            </summary>
+            <param name="host">The host to store</param>
+        </member>
+        <member name="M:ThoughtLabs.BTVShowInfo.PluginInterface.IShowInfoEditor.EditShowInfo(System.Data.DataTable@,System.Xml.XPath.XPathNavigator)">
+            <summary>
+            Allows the plugin to change the data in the dataset
+            </summary>
+            <param name="table">The DataTable to read and change</param>
+            <param name="nav">Access to the column information</param>
+            <returns>true if the Edit was successful</returns>
+        </member>
+        <member name="T:ThoughtLabs.BTVShowInfo.PluginInterface.IPluginHost">
+            <summary>
+            Interface the host implements
+            </summary>
+        </member>
+        <member name="M:ThoughtLabs.BTVShowInfo.PluginInterface.IPluginHost.AddMenuItem(System.String,ThoughtLabs.BTVShowInfo.PluginInterface.IShowInfoEditor)">
+            <summary>
+            Adds a menu item that will call the EditShowInfo function
+            </summary>
+            <param name="menuText">The text of the menu</param>
+            <param name="plugin">the class that wants the EditShowInfo call</param>
+        </member>
+        <member name="M:ThoughtLabs.BTVShowInfo.PluginInterface.IPluginHost.GetAllShowData">
+            <summary>
+            Returns the dataview containing all show data
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
