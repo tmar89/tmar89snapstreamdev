@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/skin" ClrNamespace="System.Collections", Assembly="Mscorlib" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/skin" ClrNamespace="SnapStream.Plugins.XMRadio", Assembly="SnapStream.Plugins.XMRadio" ?>
+<PluginInfoList xmlns="http://www.snapstream.com/2004/05/skin">
+	<PluginInfo OutputFilename="SnapStream.Plugins.XMRadio.dll" IncludeDebugInformation="True">
+		<PluginInfo.References>
+			<ArrayList>
+				<String>System.dll</String>
+				<String>System.Drawing.dll</String>
+				<String>System.Windows.Forms.dll</String>				
+				<String>SnapStream.dll</String>
+				<String>SnapStream.ViewScape.dll</String>
+			</ArrayList>
+		</PluginInfo.References>
+		<PluginInfo.SourceFiles>
+			<ArrayList>
+			</ArrayList>
+		</PluginInfo.SourceFiles>
+		<PluginInfo.Screens>
+			<ScreenInfoList>
+				<ScreenInfo
+					Class="SnapStream.Plugins.XMRadio.XMRadioScreen"
+					ScreenID="XMRadioScreen"
+					SkinFilePath="XMRadioScreen.xml">
+					<ScreenInfo.PluginMenuItem>
+						<MenuItem Label="XM Radio" Image="Images\Logo.png">
+							<MenuItem.Action>
+								<ShowScreen Screen="XMRadioScreen" />
+							</MenuItem.Action>
+						</MenuItem>
+					</ScreenInfo.PluginMenuItem>								
+				</ScreenInfo>								
+				<ScreenInfo
+					Class="SnapStream.Plugins.XMRadio.XMSettingsScreen"
+					ScreenID="XMSettingsScreen"
+					SkinFilePath="XMSettingsScreen.xml">
+				</ScreenInfo>								
+			</ScreenInfoList>
+		</PluginInfo.Screens>			
+		<PluginInfo.Settings>
+			<ConfigTemplate>
+				<Setting Name="XMRadio.UserInfo" Label="User Info">
+						<SettingValue Value="" Label="Set" />
+				</Setting>	
+				<Setting Name="XMRadio.Speed" Label="Connection Speed" Default="high">
+					<SettingValue Value="high" Label="High" /> 
+					<SettingValue Value="low" Label="Low" /> 
+					<Setting.UpdateAction>
+						<ExecuteCommand Command="XMRadio.ChangeSpeed" />
+					</Setting.UpdateAction>					
+				</Setting>
+			</ConfigTemplate>
+		</PluginInfo.Settings>
+		<PluginInfo.SettingsOptionList>
+			<OptionList ID="XMRadio" X="25" Y="110" Width="590" Height="300">
+				<OptionListItem PluginInfo.Setting="XMRadio.Speed">
+				</OptionListItem>								
+				<OptionListItem PluginInfo.Setting="XMRadio.UserInfo" Button="True">
+					<OptionListItem.ActivateAction>
+						<ShowScreen Screen="XMSettingsScreen" />
+					</OptionListItem.ActivateAction>
+				</OptionListItem>
+			</OptionList>				
+		</PluginInfo.SettingsOptionList>	
+		<PluginInfo.SettingsMenuItem>
+			<MenuItem Label="XM Radio" Image="SSBM_MainMenu_Settings">
+				<MenuItem.Action>
+					<ExecuteCommand Command="Settings.ShowOptions" Data="XMRadio" />
+				</MenuItem.Action>
+			</MenuItem>
+		</PluginInfo.SettingsMenuItem>				
+	</PluginInfo>
+</PluginInfoList>

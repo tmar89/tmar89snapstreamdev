@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/skin" ClrNamespace="System.Collections", Assembly="Mscorlib" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/skin" ClrNamespace="SnapStream.Plugins.YahooTrailers", Assembly="SnapStream.Plugins.YahooTrailers" ?>
+<PluginInfoList xmlns="http://www.snapstream.com/2004/05/skin">
+	<PluginInfo OutputFilename="SnapStream.Plugins.YahooTrailers.dll" IncludeDebugInformation="True">
+		<PluginInfo.References>
+			<ArrayList>
+				<String>System.dll</String>
+				<String>System.Drawing.dll</String>
+				<String>System.Windows.Forms.dll</String>				
+				<String>SnapStream.dll</String>
+				<String>SnapStream.ViewScape.dll</String>
+			</ArrayList>
+		</PluginInfo.References>
+		<PluginInfo.SourceFiles>
+			<ArrayList>
+			</ArrayList>
+		</PluginInfo.SourceFiles>
+		<PluginInfo.Screens>
+			<ScreenInfoList>
+				<ScreenInfo
+					Class="SnapStream.Plugins.YahooTrailers.YahooTrailersPosterScreen"
+					ScreenID="YahooTrailersPosterScreen"
+					SkinFilePath="YahooTrailersPosterScreen.xml">
+					<ScreenInfo.PluginMenuItem>
+						<MenuItem Label="HD Trailers" Image="logo.png">
+							<MenuItem.Action>
+								<ShowScreen Screen="YahooTrailersPosterScreen" />
+							</MenuItem.Action>
+						</MenuItem>
+					</ScreenInfo.PluginMenuItem>													
+				</ScreenInfo>			
+				<ScreenInfo
+					Class="SnapStream.Plugins.YahooTrailers.YahooTrailersScreen"
+					ScreenID="YahooTrailersScreen"
+					SkinFilePath="YahooTrailersScreen.xml">															
+				</ScreenInfo>	
+				<ScreenInfo
+					Class="SnapStream.Plugins.YahooTrailers.YahooTrailersDetailsScreen"
+					ScreenID="YahooTrailersDetailsScreen"
+					SkinFilePath="YahooTrailersDetailsScreen.xml">															
+				</ScreenInfo>	
+				<ScreenInfo
+					Class="SnapStream.Plugins.YahooTrailers.MovFileBrowserScreen"
+					ScreenID="MovFileBrowserScreen"
+					SkinFilePath="MovFileBrowserScreen.xml">															
+				</ScreenInfo>				
+			</ScreenInfoList>							
+		</PluginInfo.Screens>
+		<PluginInfo.Settings>
+			<ConfigTemplate>					
+				<Setting Name="YahooTrailers.DaysToKeep" Label="Trailer Expiration" Default="7">
+					<SettingValue Value="1" Label="1 day" />						
+					<SettingValue Value="7" Label="7 days" />						
+					<SettingValue Value="30" Label="30 days" />
+					<SettingValue Value="9999" Label="Never" />					
+				</Setting>					
+				<Setting Name="YahooTrailers.View" Label="View" Default="YahooTrailersScreen">
+					<SettingValue Value="YahooTrailersScreen" Label="Title and Actors" />						
+					<SettingValue Value="YahooTrailersPosterScreen" Label="Posters" />											
+				</Setting>					
+			</ConfigTemplate>
+		</PluginInfo.Settings>		
+		<PluginInfo.SettingsMenuItem>
+			<MenuItem Label="YahooTrailers" Image="logo.png">
+				<MenuItem.Action>
+					<ExecuteCommand Command="Settings.ShowOptions" Data="YahooTrailers" />					
+				</MenuItem.Action>
+			</MenuItem>
+		</PluginInfo.SettingsMenuItem>												
+	</PluginInfo>
+</PluginInfoList>

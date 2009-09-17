@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comics", "Comics\Comics.csproj", "{FBF2144E-C3D9-47C7-9359-03DFEF7623C1}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{FBF2144E-C3D9-47C7-9359-03DFEF7623C1}.Debug.ActiveCfg = Debug|.NET
+		{FBF2144E-C3D9-47C7-9359-03DFEF7623C1}.Debug.Build.0 = Debug|.NET
+		{FBF2144E-C3D9-47C7-9359-03DFEF7623C1}.Release.ActiveCfg = Release|.NET
+		{FBF2144E-C3D9-47C7-9359-03DFEF7623C1}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

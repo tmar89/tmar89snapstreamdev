@@ -1,0 +1,15 @@
+<BeyondMediaProject Type="BeyondMediaPlugin">
+  <Name>Apple Trailers</Name>
+  <Description>View and play upcoming trailers from Apple.com</Description>
+  <Author>Tommy Marullo</Author>
+  <Version>0.1</Version>
+  <Website>
+  </Website>
+  <ProjectItems>
+    <File Name="AppleTrailersDetailsScreen.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\AppleTrailers\AppleTrailersDetailsScreen.xml" />
+    <File Name="AppleTrailersScreen.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\AppleTrailers\AppleTrailersScreen.xml" />
+    <File Name="Interop.WMPLib.dll" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\AppleTrailers\Interop.WMPLib.dll" />
+    <File Name="Plugins.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\AppleTrailers\Plugins.xml" />
+    <File Name="SnapStream.Plugins.AppleTrailers.dll" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\AppleTrailers\SnapStream.Plugins.AppleTrailers.dll" />
+  </ProjectItems>
+</BeyondMediaProject>

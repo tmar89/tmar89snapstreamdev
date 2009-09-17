@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/xaml" ClrNamespace="SnapStream.Plugins.iTunes", Assembly="SnapStream.Plugins.iTunes" ?>
+<iTunesScreen xmlns="http://www.snapstream.com/2004/05/xaml"
+	ScreenBaseWidth="640"
+	ScreenBaseHeight="480"
+	Background="SSBM_DefaultBackground">
+	<iTunesScreen.Header>
+		<TextWindow X="0" Y="0" Width="600" Height="100" FontSize="30" Multiline="True" Text="iTunes Radio: " />
+	</iTunesScreen.Header>	
+	<iTunesScreen.Volume>
+		<TextWindow X="600" Y="0" Width="40" Height="40" FontSize="20" HorizontalAlign="Right" />
+	</iTunesScreen.Volume>	
+	<iTunesScreen.List>
+		<VariableItemList X="0" Y="100" Width="640" Height="300" />		
+	</iTunesScreen.List>
+	<iTunesScreen.NextButton>
+		<TextButton X="0" Y="160" Width="200" Height="40" FontSize="20" Text="Next"/>
+	</iTunesScreen.NextButton>	
+	<iTunesScreen.ShuffleButton>
+		<TextButton X="0" Y="200" Width="200" Height="40" FontSize="20" Text="Toggle Shuffle"/>
+	</iTunesScreen.ShuffleButton>		
+	<iTunesScreen.PlayAllButton>
+		<TextButton X="0" Y="80" Width="200" Height="40" FontSize="20" Text="Play All"/>
+	</iTunesScreen.PlayAllButton>		
+	<iTunesScreen.SearchButton>
+		<TextButton X="0" Y="120" Width="200" Height="40" FontSize="20" Text="Search and Play"/>
+	</iTunesScreen.SearchButton>		
+	<iTunesSettingsScreen.SearchEntry>
+		<TextEntry X="70" Y="140" Width="500" Height="300" Visible="False" />
+	</iTunesSettingsScreen.SearchEntry>	
+</iTunesScreen>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/xaml" ClrNamespace="SnapStream.Plugins.iTunes", Assembly="SnapStream.Plugins.iTunes" ?>
+<iTunesSettingsScreen xmlns="http://www.snapstream.com/2004/05/xaml"
+	ScreenBaseWidth="640"
+	ScreenBaseHeight="480"
+	Background="SSBM_DefaultBackground">
+	<iTunesSettingsScreen.OptionList>
+		<TextList X="25" Y="25" Width="590" Height="140" VisibleItems="2"/>
+	</iTunesSettingsScreen.OptionList>
+	<iTunesSettingsScreen.URL>
+		<TextWindow X="70" Y="80" Width="500" Height="40" HorizontalAlign="Center" Text="URL: "/>
+	</iTunesSettingsScreen.URL>	
+	<iTunesSettingsScreen.URLEntry>
+		<TextEntry X="70" Y="140" Width="500" Height="300" />
+	</iTunesSettingsScreen.URLEntry>	
+	<iTunesSettingsScreen.Password>
+		<TextWindow X="70" Y="140" Width="500" Height="40" HorizontalAlign="Center" Text="Password: "/>
+	</iTunesSettingsScreen.Password>	
+	<iTunesSettingsScreen.PasswordEntry>
+		<TextEntry X="70" Y="140" Width="500" Height="300" />
+	</iTunesSettingsScreen.PasswordEntry>		
+</iTunesSettingsScreen>

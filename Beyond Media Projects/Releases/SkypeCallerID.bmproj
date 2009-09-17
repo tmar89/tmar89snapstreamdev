@@ -1,0 +1,17 @@
+<BeyondMediaProject Type="BeyondMediaPlugin">
+  <Name>Skype Caller ID</Name>
+  <Description>Pops up a window over any screen (even BTV) when there is an incoming Skype call.</Description>
+  <Author>Tommy Marullo</Author>
+  <Version>1.0</Version>
+  <Website>http://www.x-89.com</Website>
+  <ProjectItems>
+    <File Name="Interop.SKYPE4COMLib.dll" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\SkypeCallerID\Interop.SKYPE4COMLib.dll" />
+    <File Name="manifest.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\SkypeCallerID\manifest.xml" />
+    <File Name="Plugins.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\SkypeCallerID\Plugins.xml" />
+    <File Name="Register Skype.bat" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\SkypeCallerID\Register Skype.bat" />
+    <File Name="SampleOverlay.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\SkypeCallerID\SampleOverlay.xml" />
+    <File Name="Skype4COM.dll" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\SkypeCallerID\Skype4COM.dll" />
+    <File Name="SnapStream.Plugins.Sample.dll" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\SkypeCallerID\SnapStream.Plugins.Sample.dll" />
+    <File Name="Unregister Skype.bat" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\SkypeCallerID\Unregister Skype.bat" />
+  </ProjectItems>
+</BeyondMediaProject>

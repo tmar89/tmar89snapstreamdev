@@ -1,0 +1,20 @@
+<BeyondMediaProject Type="BeyondMediaPlugin">
+  <Name>Comics Revived</Name>
+  <Description>View daily comic strips </Description>
+  <Author>Tommy Marullo</Author>
+  <Version>1.5.1</Version>
+  <Website>http://www.x-89.com/BMplugins</Website>
+  <ProjectItems>
+    <Directory Name="Images">
+      <File Name="Comics.png" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\Comics\Images\Comics.png" />
+      <File Name="downloading.png" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\Comics\Images\downloading.png" />
+      <File Name="nopreview.png" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\Comics\Images\nopreview.png" />
+    </Directory>
+    <File Name="AvailableComics.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\Comics\AvailableComics.xml" />
+    <File Name="ComicsPreviewScreen.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\Comics\ComicsPreviewScreen.xml" />
+    <File Name="ComicsScreen.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\Comics\ComicsScreen.xml" />
+    <File Name="ComicsSubscriptionsScreen.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\Comics\ComicsSubscriptionsScreen.xml" />
+    <File Name="Plugins.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\Comics\Plugins.xml" />
+    <File Name="SnapStream.Plugins.Comics.dll" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\Comics\SnapStream.Plugins.Comics.dll" />
+  </ProjectItems>
+</BeyondMediaProject>

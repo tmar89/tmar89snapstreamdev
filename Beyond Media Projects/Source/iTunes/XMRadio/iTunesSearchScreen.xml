@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/xaml" ClrNamespace="SnapStream.Plugins.iTunes", Assembly="SnapStream.Plugins.iTunes" ?>
+<iTunesSearchScreen xmlns="http://www.snapstream.com/2004/05/xaml"
+	ScreenBaseWidth="640"
+	ScreenBaseHeight="480"
+	Background="SSBM_DefaultBackground">
+	<iTunesSearchScreen.OptionList>
+		<TextList X="25" Y="25" Width="590" Height="140" VisibleItems="1"/>
+	</iTunesSearchScreen.OptionList>
+	<iTunesSearchScreen.Search>
+		<TextWindow X="40" Y="80" Width="500" Height="40" HorizontalAlign="Center" Text="Search: "/>
+	</iTunesSearchScreen.Search>		
+</iTunesSearchScreen>

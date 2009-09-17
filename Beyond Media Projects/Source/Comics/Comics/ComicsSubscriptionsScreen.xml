@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/xaml" ClrNamespace="SnapStream.Plugins.Comics", Assembly="SnapStream.Plugins.Comics" ?>
+<ComicsSubscriptionsScreen xmlns="http://www.snapstream.com/2004/05/xaml"
+	ScreenBaseWidth="640"
+	ScreenBaseHeight="480"
+	Background="SSBM_DefaultBackground">
+	<ComicsSubscriptionsScreen.Instructions>
+		<TextWindow X="20" Y="30" Width="600" Height="90" FontSize="25" Multiline="True" Text="Please select comics first"/>
+	</ComicsSubscriptionsScreen.Instructions>
+	<ComicsSubscriptionsScreen.AvailableComics>
+		<TextList X="20" Y="90" Width="600" Height="320"
+			VisibleItems="5" />
+	</ComicsSubscriptionsScreen.AvailableComics>
+</ComicsSubscriptionsScreen>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/xaml" ClrNamespace="SnapStream.Plugins.Comics", Assembly="SnapStream.Plugins.Comics" ?>
+<ComicsPreview xmlns="http://www.snapstream.com/2004/05/xaml"
+	Background="SSBM_MenuBoxBackground">
+	<ComicsPreview.ComicWindow>
+		<Window X="0" Y="0" Width="600" Height="200" />
+	</ComicsPreview.ComicWindow>	
+</ComicsPreview>
