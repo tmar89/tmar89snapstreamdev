@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/xaml" ClrNamespace="SnapStream.Plugins.YahooTrailers", Assembly="SnapStream.Plugins.YahooTrailers" ?>
+<YahooTrailersScreen xmlns="http://www.snapstream.com/2004/05/xaml"
+	ScreenBaseWidth="640"
+	ScreenBaseHeight="480"
+	Background="SSBM_DefaultBackground">
+	<YahooTrailersScreen.Header>
+		<TextWindow X="0" Y="0" Width="400" Height="40" FontSize="40" Multiline="False" Text="Yahoo! HD Trailers" />
+	</YahooTrailersScreen.Header>	
+	<YahooTrailersScreen.Library>
+		<TextButton X="360" Y="8" Width="200" Height="24" FontSize="24" Text="Trailer Library: " />
+	</YahooTrailersScreen.Library>	
+	<YahooTrailersScreen.View>
+		<TextButton X="565" Y="8" Width="65" Height="24" Text="View" />
+	</YahooTrailersScreen.View>		
+	<YahooTrailersScreen.TrailerList>
+		<VariableItemList X="0" Y="40" Width="640" Height="400" />		
+	</YahooTrailersScreen.TrailerList>	
+	<YahooTrailersScreen.YahooLogo>
+		<Window X="0" Y="465" Width="125" Height="15" Background="yahoologo.png" />
+	</YahooTrailersScreen.YahooLogo>	
+	<YahooTrailersScreen.Downloading>
+		<Window X="590" Y="430" Width="50" Height="50" Visible="false" Background="qtdl.png" />
+	</YahooTrailersScreen.Downloading>
+</YahooTrailersScreen>

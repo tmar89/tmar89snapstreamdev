@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWFtoBMP", "SWFtoBMP\SWFtoBMP.csproj", "{B33000B3-CE79-4662-B42B-8E1E447C97BF}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{B33000B3-CE79-4662-B42B-8E1E447C97BF}.Debug.ActiveCfg = Debug|.NET
+		{B33000B3-CE79-4662-B42B-8E1E447C97BF}.Debug.Build.0 = Debug|.NET
+		{B33000B3-CE79-4662-B42B-8E1E447C97BF}.Release.ActiveCfg = Release|.NET
+		{B33000B3-CE79-4662-B42B-8E1E447C97BF}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/xaml" ClrNamespace="SnapStream.Plugins.XMRadio", Assembly="SnapStream.Plugins.XMRadio" ?>
+<XMSettingsScreen xmlns="http://www.snapstream.com/2004/05/xaml"
+	ScreenBaseWidth="640"
+	ScreenBaseHeight="480"
+	Background="SSBM_DefaultBackground">
+	<XMSettingsScreen.OptionList>
+		<TextList X="25" Y="25" Width="590" Height="140" VisibleItems="3"/>
+	</XMSettingsScreen.OptionList>
+	<XMSettingsScreen.Email>
+		<TextWindow X="70" Y="80" Width="500" Height="40" HorizontalAlign="Center" Text="Email: "/>
+	</XMSettingsScreen.Email>	
+	<XMSettingsScreen.EmailEntry>
+		<TextEntry X="70" Y="140" Width="500" Height="300" />
+	</XMSettingsScreen.EmailEntry>	
+	<XMSettingsScreen.Password>
+		<TextWindow X="70" Y="140" Width="500" Height="40" HorizontalAlign="Center" Text="Password: "/>
+	</XMSettingsScreen.Password>	
+	<XMSettingsScreen.PasswordEntry>
+		<TextEntry X="70" Y="140" Width="500" Height="300" />
+	</XMSettingsScreen.PasswordEntry>		
+</XMSettingsScreen>

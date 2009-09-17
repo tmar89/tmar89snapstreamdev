@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/xaml" ClrNamespace="SnapStream.Plugins.YahooTrailers", Assembly="SnapStream.Plugins.YahooTrailers" ?>
+<YahooTrailersDetailsScreen xmlns="http://www.snapstream.com/2004/05/xaml"
+	ScreenBaseWidth="640"
+	ScreenBaseHeight="480"
+	Background="SSBM_DefaultBackground">
+	<YahooTrailersDetailsScreen.Header>
+		<TextWindow X="0" Y="0" Width="600" Height="40" FontSize="40" Multiline="False" />
+	</YahooTrailersDetailsScreen.Header>	
+	<YahooTrailersDetailsScreen.Poster>
+		<PosterWindow X="0" Y="50" Width="130" Height="200" />
+	</YahooTrailersDetailsScreen.Poster>
+	<YahooTrailersDetailsScreen.Details>
+		<TextWindow X="140" Y="50" Width="500" Height="130" FontSize="28" Multiline="True" />
+	</YahooTrailersDetailsScreen.Details>		
+	<YahooTrailersDetailsScreen.Starring>
+		<TextWindow X="140" Y="180" Width="500" Height="60" FontSize="28" Multiline="True" />
+	</YahooTrailersDetailsScreen.Starring>	
+	<YahooTrailersDetailsScreen.Genre>
+		<TextWindow X="140" Y="240" Width="500" Height="30" FontSize="28" Multiline="True" />
+	</YahooTrailersDetailsScreen.Genre>	
+	<YahooTrailersDetailsScreen.ReleaseDate>
+		<TextWindow X="140" Y="270" Width="500" Height="30" FontSize="28" Multiline="True" />
+	</YahooTrailersDetailsScreen.ReleaseDate>	
+	<YahooTrailersDetailsScreen.Rating>
+		<TextWindow X="140" Y="300" Width="500" Height="30" FontSize="28" Multiline="True" />
+	</YahooTrailersDetailsScreen.Rating>
+	<YahooTrailersDetailsScreen.Trailers>		
+		<VariableItemList X="140" Y="330" Width="500" Height="120" />
+	</YahooTrailersDetailsScreen.Trailers>	
+	<YahooTrailersDetailsScreen.YahooLogo>
+		<Window X="0" Y="465" Width="125" Height="15" Background="yahoologo.png" />
+	</YahooTrailersDetailsScreen.YahooLogo>		
+	<YahooTrailersDetailsScreen.Downloading>
+		<Window X="590" Y="430" Width="50" Height="50" Visible="false" Background="qtdl.png" />
+	</YahooTrailersDetailsScreen.Downloading>		
+</YahooTrailersDetailsScreen>

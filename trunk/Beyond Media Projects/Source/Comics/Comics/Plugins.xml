@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/skin" ClrNamespace="System.Collections", Assembly="Mscorlib" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/skin" ClrNamespace="SnapStream.Plugins.Comics", Assembly="SnapStream.Plugins.Comics" ?>
+<PluginInfoList xmlns="http://www.snapstream.com/2004/05/skin">
+	<PluginInfo OutputFilename="SnapStream.Plugins.Comics.dll" IncludeDebugInformation="True">
+		<PluginInfo.References>
+			<ArrayList>
+				<String>System.dll</String>
+				<String>System.Drawing.dll</String>
+				<String>System.Windows.Forms.dll</String>				
+				<String>SnapStream.dll</String>
+				<String>SnapStream.ViewScape.dll</String>
+			</ArrayList>
+		</PluginInfo.References>		
+		<PluginInfo.Screens>
+			<ScreenInfoList>
+				<ScreenInfo
+					Class="SnapStream.Plugins.Comics.ComicsScreen"
+					ScreenID="ComicsScreen"
+					SkinFilePath="ComicsScreen.xml">
+					<ScreenInfo.PluginMenuItem>
+						<MenuItem Label="Comics" Image="Images\Comics.png">
+							<MenuItem.Action>
+								<ShowScreen Screen="ComicsScreen" />
+							</MenuItem.Action>
+						</MenuItem>
+					</ScreenInfo.PluginMenuItem>			
+				</ScreenInfo>
+				<ScreenInfo
+					Class="SnapStream.Plugins.Comics.ComicsSubscriptionsScreen"
+					ScreenID="ComicsSubscriptionsScreen"
+					SkinFilePath="ComicsSubscriptionsScreen.xml">
+				</ScreenInfo>
+				<ScreenInfo
+					Class="SnapStream.ViewScape.Widgets.SlideShowScreen"
+					ScreenID="ComicsSlideShowScreen">
+				</ScreenInfo>				
+			</ScreenInfoList>
+		</PluginInfo.Screens>		
+		<PluginInfo.Settings>
+			<ConfigTemplate>
+				<Setting Name="Comics.EditSubscriptions" Label="Edit Subscriptions">
+						<SettingValue Value="" Label="Edit..." />
+				</Setting>			
+				<Setting Name="Comics.DefaultZoom" Label="Default Zoom" Default="100">
+					<SettingValue Value="100" Label="100%" /> 
+					<SettingValue Value="110" Label="110%" /> 
+					<SettingValue Value="120" Label="120%" /> 
+					<SettingValue Value="130" Label="130%" /> 
+					<SettingValue Value="140" Label="140%" /> 
+					<SettingValue Value="150" Label="150%" /> 
+				</Setting>
+				<Setting Name="Comics.DaysToKeep" Label="Days To Keep" Default="3">
+					<SettingValue Value="1" Label="1" />
+					<SettingValue Value="3" Label="3" />
+					<SettingValue Value="7" Label="7" />
+					<SettingValue Value="14" Label="14" />
+					<SettingValue Value="30" Label="30" />
+					<SettingValue Value="60" Label="60" />
+					<Setting.UpdateAction>
+						<ExecuteCommand Command="Comics.ChangeDaysToKeep" />
+					</Setting.UpdateAction>	
+				</Setting>
+				<Setting Name="Comics.SortBy" Label="Sort By" Default="Date">
+					<SettingValue Value="Date" Label="Date" /> 
+					<SettingValue Value="Comic" Label="Comic" /> 
+				</Setting>
+			</ConfigTemplate>
+		</PluginInfo.Settings>
+		<PluginInfo.SettingsOptionList>
+			<OptionList ID="Comics" X="25" Y="110" Width="590" Height="300">
+				<OptionListItem PluginInfo.Setting="Comics.DaysToKeep">
+				</OptionListItem>				
+				<OptionListItem PluginInfo.Setting="Comics.DefaultZoom">
+				</OptionListItem>				
+				<OptionListItem PluginInfo.Setting="Comics.SortBy">
+				</OptionListItem>				
+				<OptionListItem PluginInfo.Setting="Comics.EditSubscriptions" Button="True">
+					<OptionListItem.ActivateAction>
+						<ShowScreen Screen="ComicsSubscriptionsScreen" />
+					</OptionListItem.ActivateAction>
+				</OptionListItem>
+			</OptionList>				
+		</PluginInfo.SettingsOptionList>			
+		<PluginInfo.SettingsMenuItem>
+			<MenuItem Label="Comics" Image="Images\Comics.png">
+				<MenuItem.Action>
+					<ExecuteCommand Command="Settings.ShowOptions" Data="Comics" />					
+				</MenuItem.Action>
+			</MenuItem>
+		</PluginInfo.SettingsMenuItem>	
+		<PluginInfo.Overlays>
+		    <OverlayInfoList>
+				<OverlayInfo 
+					Visible="False"
+					Class="SnapStream.Plugins.Comics.ComicsPreview" 
+					SkinFilePath="ComicsPreviewScreen.xml">
+					<OverlayInfo.OverlayObject>
+						<ComicsPreview X="100" Y="200" Width="600" Height="200"/>
+				  </OverlayInfo.OverlayObject>
+				</OverlayInfo>
+		    </OverlayInfoList>
+		</PluginInfo.Overlays> 	
+	</PluginInfo>
+</PluginInfoList>

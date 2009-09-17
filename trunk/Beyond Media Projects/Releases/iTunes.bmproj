@@ -1,0 +1,14 @@
+<BeyondMediaProject Type="BeyondMediaPlugin">
+  <Name>iTunes Streamer</Name>
+  <Description>Plugin for MyTunesRSS</Description>
+  <Author>Tommy Marullo</Author>
+  <Version>0.1</Version>
+  <Website>http://www.x-89.com/</Website>
+  <ProjectItems>
+    <File Name="Interop.WMPLib.dll" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\iTunes\Interop.WMPLib.dll" />
+    <File Name="iTunesScreen.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\iTunes\iTunesScreen.xml" />
+    <File Name="iTunesSettingsScreen.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\iTunes\iTunesSettingsScreen.xml" />
+    <File Name="Plugins.xml" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\iTunes\Plugins.xml" />
+    <File Name="SnapStream.Plugins.iTunes.dll" FullPath="C:\Documents and Settings\All Users\Application Data\SnapStream\Beyond Media\Plugins\iTunes\SnapStream.Plugins.iTunes.dll" />
+  </ProjectItems>
+</BeyondMediaProject>

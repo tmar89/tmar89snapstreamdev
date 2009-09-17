@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/skin" ClrNamespace="System.Collections", Assembly="Mscorlib" ?>
+<?Mapping XmlNamespace="http://www.snapstream.com/2004/05/skin" ClrNamespace="SnapStream.Plugins.iTunes", Assembly="SnapStream.Plugins.iTunes" ?>
+<PluginInfoList xmlns="http://www.snapstream.com/2004/05/skin">
+	<PluginInfo OutputFilename="SnapStream.Plugins.iTunes.dll" IncludeDebugInformation="True">
+		<PluginInfo.References>
+			<ArrayList>
+				<String>System.dll</String>
+				<String>System.Drawing.dll</String>
+				<String>System.Windows.Forms.dll</String>				
+				<String>SnapStream.dll</String>
+				<String>SnapStream.ViewScape.dll</String>
+			</ArrayList>
+		</PluginInfo.References>
+		<PluginInfo.SourceFiles>
+			<ArrayList>
+			</ArrayList>
+		</PluginInfo.SourceFiles>
+		<PluginInfo.Screens>
+			<ScreenInfoList>
+				<ScreenInfo
+					Class="SnapStream.Plugins.iTunes.iTunesScreen"
+					ScreenID="iTunesScreen"
+					SkinFilePath="iTunesScreen.xml">
+					<ScreenInfo.PluginMenuItem>
+						<MenuItem Label="iTunes" Image="SSBM_MainMenu_Settings">
+							<MenuItem.Action>
+								<ShowScreen Screen="iTunesScreen" />
+							</MenuItem.Action>
+						</MenuItem>
+					</ScreenInfo.PluginMenuItem>								
+				</ScreenInfo>								
+				<ScreenInfo
+					Class="SnapStream.Plugins.iTunes.iTunesSettingsScreen"
+					ScreenID="iTunesSettingsScreen"
+					SkinFilePath="iTunesSettingsScreen.xml">
+				</ScreenInfo>								
+			</ScreenInfoList>
+		</PluginInfo.Screens>					
+		<PluginInfo.SettingsMenuItem>
+			<MenuItem Label="iTunes" Image="SSBM_MainMenu_Settings">
+				<MenuItem.Action>					
+					<ShowScreen Screen="iTunesSettingsScreen" />
+				</MenuItem.Action>
+			</MenuItem>
+		</PluginInfo.SettingsMenuItem>				
+	</PluginInfo>
+</PluginInfoList>
