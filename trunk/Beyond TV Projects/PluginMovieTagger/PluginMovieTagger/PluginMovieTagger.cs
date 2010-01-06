@@ -793,7 +793,7 @@ namespace ThoughtLabs
                     }                    
                     // Find the plot
                     indexToFind = "Plot:</h5>";
-                    startindex = response.IndexOf(indexToFind) + indexToFind.Length + 1;
+                    startindex = response.IndexOf(indexToFind) + indexToFind.Length + 1 + 27;
                     endindex = response.IndexOf("<a", startindex);
                     if (endindex - startindex < 1 || endindex - startindex > 2000)
                     {
@@ -809,7 +809,7 @@ namespace ThoughtLabs
                         moviePlot = "Disc " + discNum + ": " + moviePlot;
                     // Find the genre
                     indexToFind = "Genre:</h5>";
-                    startindex = response.IndexOf(indexToFind);                    
+                    startindex = response.IndexOf(indexToFind) + 27;                    
                     string subresp = response.Substring(startindex, 1000);                    
                     startindex = subresp.IndexOf("/\">") + 3;
                     endindex = subresp.IndexOf("</a>", startindex);
@@ -868,9 +868,9 @@ namespace ThoughtLabs
                     else
                         movieActors = "";
                     // Find the date
-                    indexToFind = "Date:</h5>";
-                    startindex = response.IndexOf(indexToFind) + indexToFind.Length + 1;
-                    endindex = response.IndexOf("(", startindex);
+                    indexToFind = "Date:</h5>";                    
+                    startindex = response.IndexOf(indexToFind) + indexToFind.Length + 1 + 27;                    
+                    endindex = response.IndexOf("(", startindex);                    
                     if (endindex - startindex < 1 || endindex - startindex > 50)
                     {
                         //throw new Exception("Error Parsing Date");
@@ -878,7 +878,7 @@ namespace ThoughtLabs
                     }
                     else
                     {                        
-                        string date = response.Substring(startindex, endindex - startindex);
+                        string date = response.Substring(startindex, endindex - startindex);                        
                         string[] dateParts = date.Split(' ');
                         string month = "January";
                         string day = "01";                        
