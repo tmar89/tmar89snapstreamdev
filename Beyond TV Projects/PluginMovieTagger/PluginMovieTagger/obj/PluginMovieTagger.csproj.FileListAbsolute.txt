@@ -14,3 +14,8 @@ C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginM
 C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\bin\Debug\BTVShowInfoPluginInterface.xml
 C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\obj\Debug\PluginMovieTagger.dll
 C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\PluginMovieTagger\PluginMovieTagger\obj\Debug\PluginMovieTagger.pdb
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\PluginMovieTagger\PluginMovieTagger\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\PluginMovieTagger\PluginMovieTagger\bin\Release\PluginMovieTagger.dll
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\PluginMovieTagger\PluginMovieTagger\bin\Release\PluginMovieTagger.pdb
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\PluginMovieTagger\PluginMovieTagger\obj\Release\PluginMovieTagger.dll
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\PluginMovieTagger\PluginMovieTagger\obj\Release\PluginMovieTagger.pdb

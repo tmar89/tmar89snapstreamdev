@@ -545,8 +545,15 @@ namespace ThoughtLabs {
                     string overview = doc.GetElementsByTagName("Overview").Item(0).InnerText;                    
                     if (DEBUG)
                         MessageBox.Show("Overview: " + overview);
-                    // Append Series and Episode numbers
-                    overview = overview + " - Season " + tagger.seasonNumber + ", Episode " + tagger.episodeNumber + ".";
+                    // Append Series and Episode number to the beginning
+                    if (tagger.seasonNumber.Length == 1 && tagger.episodeNumber.Length == 1)
+                        overview = "S0" + tagger.seasonNumber + "E0" + tagger.episodeNumber + " - " + overview;
+                    else if (tagger.seasonNumber.Length == 1 && tagger.episodeNumber.Length == 2)
+                        overview = "S0" + tagger.seasonNumber + "E" + tagger.episodeNumber + " - " + overview;
+                    else if (tagger.seasonNumber.Length == 2 && tagger.episodeNumber.Length == 1)
+                        overview = "S" + tagger.seasonNumber + "E0" + tagger.episodeNumber + " - " + overview;
+                    else
+                        overview = "S" + tagger.seasonNumber + "E" + tagger.episodeNumber + " - " + overview;
                     row["EpisodeDescription"] = overview;
 
                     updatedRowCount++;                       
