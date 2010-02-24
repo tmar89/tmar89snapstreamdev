@@ -12,15 +12,21 @@ namespace ConsoleApplication1
     class Program
     {
         static void Main(string[] args)
-        {   
+        {
+            bool simMode = true;            
+
             // Bag of all the media files in the BTV Library
             PVSPropertyBag[] mediafiles;
+            int mediaCounter = 0;
 
             // List to save the Series names and ID
             List<string> seriesNameList = new List<string>();
             List<string> seriesIDList = new List<string>();
 
-            // Logon to the BeyondTV server
+            // String for holding console line responses
+            String res;
+
+            // Logon to the BeyondTV server            
             BTVLicenseManager manager = new BTVLicenseManager();
             // Get server details
             Console.Write("Enter BeyondTV Server port [8129]: ");
@@ -36,6 +42,7 @@ namespace ConsoleApplication1
             string password = Console.ReadLine();
             if (password.Equals(""))
                 password = "password";
+            Console.WriteLine("Connecting to Beyond TV Server...");
             PVSPropertyBag lbag = manager.Logon("", username, password);
             string auth = "";
             foreach (PVSProperty pvp in lbag.Properties)
@@ -46,18 +53,29 @@ namespace ConsoleApplication1
                     auth = pvp.Value;
                 }
             }
-            Console.WriteLine("Connecting to Beyond TV Server...");
+            Console.WriteLine("Connected!");
+
+            Console.Write("Run in Simulation Mode? [y]/n: ");
+            res = Console.ReadLine();
+            if (!res.Equals("y") && !res.Equals("Y") && !res.Equals(""))
+                simMode = false;
+
+            //Console.Write("Full Debug Mode? y/[n]: ");
+            //res = Console.ReadLine();
+            //if (!res.Equals("n") && !res.Equals("N") && !res.Equals(""))
+            //    fullDebug = true;
 
             // Load Library
             BTVLibrary library = new BTVLibrary();
-            library.Url = "http://127.0.0.1:"+port+"/wsdl/BTVLibrary.asmx";              
+            library.Url = "http://127.0.0.1:"+port+"/wsdl/BTVLibrary.asmx";
+            Console.Write("Retrieving Library... ");
             
             // Get all filenames in library that were recorded by BTV
             mediafiles = library.FlatViewByTitle(auth);
+            Console.WriteLine(" Found {0} files.", mediafiles.Length);
             foreach (PVSPropertyBag mediafile in mediafiles)
-            {
-                // Define variables
-                string res = null;
+            {                
+                // Define variables for the media looping                
                 string seriesName = null;
                 string originalAirDate = null;
                 string channel;
@@ -69,10 +87,14 @@ namespace ConsoleApplication1
                 XmlTextReader reader = null;
                 XmlDocument doc = null;
                 int seriesIndex = 0;
-                string seriesID = null;                
+                int episodeIndex = 0;
+                string seriesID = null;                              
 
                 // Reset the flag to see if the channel data is set
                 bool hasChannel = false;
+
+                // Reset the flag to see if the channel data is set
+                bool foundMovie = false;
 
                 // Reset the flag to see if the series exists in memory
                 bool existsInMemory = false;
@@ -84,7 +106,7 @@ namespace ConsoleApplication1
                 bool foundSeries = false;
 
                 // Reset the flag to see if an episode was found
-                bool foundEpisode = false;
+                bool foundEpisode = false;                               
 
                 // See if the media has channel info
                 foreach (PVSProperty pvp in mediafile.Properties)
@@ -93,7 +115,7 @@ namespace ConsoleApplication1
                         hasChannel = true;
                     if (pvp.Name.Equals("FullName"))
                     {
-                        Console.WriteLine("File: {0}", pvp.Value);
+                        Console.WriteLine("{1}/{2} File: {0}", pvp.Value, ++mediaCounter, mediafiles.Length);
                         filename = pvp.Value;
                     }
                 }
@@ -103,7 +125,13 @@ namespace ConsoleApplication1
                 {
                     foreach (PVSProperty pvp in mediafile.Properties)
                     {
-                        Console.WriteLine("{0} : {1}", pvp.Name, pvp.Value);
+                        //Console.WriteLine("{0} : {1}", pvp.Name, pvp.Value);
+                        if (pvp.Name.Equals("Title") && pvp.Value.Equals("Movies"))
+                        {
+                            foundMovie = true;
+                            Console.WriteLine("Skipping natively recorded movie.");                            
+                            break;
+                        }
                         if (pvp.Name.Equals("FullName"))
                         {
                             Console.WriteLine("File: {0}", pvp.Value);
@@ -124,18 +152,28 @@ namespace ConsoleApplication1
                         {
                             Console.WriteLine("Channel: {0}", pvp.Value);
                             channel = pvp.Value;
-                        }
+                        }                        
                     }
                 }
                 else
-                    Console.WriteLine("Media not a Beyond TV native recording.  Scanning next file.");
+                    Console.WriteLine("Media not a Beyond TV native recording.  Ignoring.");
+
+                // Ignore a recorded movie
+                if (foundMovie)
+                {
+                    Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
+                    Console.ReadLine();
+                    continue;
+                }
 
                 // Does the filename already have SxxExx in it?
                 if (hasChannel)
                 {
                     if (Regex.IsMatch(filename, "[Ss]+([0-9]+)+[Ee]+([0-9]+)"))
                     {
-                        Console.WriteLine("Show already in proper format");
+                        Console.WriteLine("Show already in proper format!");
+                        Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
+                        //nsole.ReadLine();
                         continue;
                     }
                 }
@@ -177,6 +215,8 @@ namespace ConsoleApplication1
                     catch (Exception e)
                     {
                         Console.WriteLine("Bad URL: {0} for Series '{1}'", URLString, seriesName);
+                        Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
+                        Console.ReadLine();
                         continue;
                     }                    
                     reader.Close();
@@ -205,23 +245,23 @@ namespace ConsoleApplication1
                             Console.WriteLine(" " + (i + 1).ToString() + " :" + seriesNamesList.Item(i).InnerText);                            
                         }                        
                         // Ask user to select a show or 0 to skip                        
-                        Console.Write("Select a Series to match '{0}' or enter 0 to skip: ", seriesName);
+                        Console.Write("Select a Series to match '{0}' or enter 0 to skip [1]: ", seriesName);
                         res = Console.ReadLine();
-                        if (!res.Equals(""))
-                        {
+                        if (res.Equals(""))
+                            seriesIndex = 0;
+                        else
                             seriesIndex = int.Parse(res) - 1;
-                            // Check if > 0 to see if the user picked a series
-                            if (seriesIndex > -1)
-                            {
-                                Console.WriteLine("Using Series '{0}'", seriesNamesList.Item(seriesIndex).InnerText);
-                                foundSeries = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Ignoring Series '{0}' ", seriesName);
-                                foundSeries = false;
-                            }
+                        // Check if > 0 to see if the user picked a series
+                        if (seriesIndex > -1)
+                        {
+                            Console.WriteLine("Using Series '{0}'", seriesNamesList.Item(seriesIndex).InnerText);
+                            foundSeries = true;
                         }
+                        else
+                        {
+                            Console.WriteLine("Ignoring Series '{0}' ", seriesName);
+                            foundSeries = false;
+                        }                    
                     }
                 }
 
@@ -250,6 +290,8 @@ namespace ConsoleApplication1
                     catch (Exception e)
                     {
                         Console.WriteLine("Bad URL: {0} for Series '{1}'", URLString, seriesName);
+                        Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
+                        Console.ReadLine();
                         continue;
                     }
                     reader.Close();
@@ -296,25 +338,25 @@ namespace ConsoleApplication1
                             Console.WriteLine(" " + (i + 1).ToString() + " : '{0}' S{1}E{2}", episodeNameSearch[i], (int.Parse(seasonSearch[i])).ToString("D2"), (int.Parse(episodeSearch[i])).ToString("D2")); 
                         }                                                
                         // Ask user to select a show or 0 to skip                        
-                        Console.Write("Select an Episode to use or enter 0 to skip: ");
+                        Console.Write("Select an Episode to use or enter 0 to skip [1]: ");
                         res = Console.ReadLine();
-                        if (!res.Equals(""))
+                        if (res.Equals(""))
+                            episodeIndex = 0;
+                        else 
+                            episodeIndex = int.Parse(res) - 1;
+                        // Check if > 0 to see if the user picked a series
+                        if (episodeIndex > -1)
                         {
-                            int episodeIndex = int.Parse(res) - 1;
-                            // Check if > 0 to see if the user picked a series
-                            if (episodeIndex > -1)
-                            {
-                                Console.WriteLine("Using '{0}' S{1}E{2}'", episodeNameSearch[episodeIndex], (int.Parse(seasonSearch[episodeIndex])).ToString("D2"), (int.Parse(episodeSearch[episodeIndex])).ToString("D2"));
-                                seasonNumber = (int.Parse(seasonSearch[episodeIndex])).ToString("D2");
-                                episodeNumber = (int.Parse(episodeSearch[episodeIndex])).ToString("D2");
-                                foundEpisode = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Ignoring Episode Search");
-                                foundEpisode = false;
-                            }
+                            Console.WriteLine("Using '{0}' S{1}E{2}'", episodeNameSearch[episodeIndex], (int.Parse(seasonSearch[episodeIndex])).ToString("D2"), (int.Parse(episodeSearch[episodeIndex])).ToString("D2"));
+                            seasonNumber = (int.Parse(seasonSearch[episodeIndex])).ToString("D2");
+                            episodeNumber = (int.Parse(episodeSearch[episodeIndex])).ToString("D2");
+                            foundEpisode = true;
                         }
+                        else
+                        {
+                            Console.WriteLine("Ignoring Episode Search");
+                            foundEpisode = false;
+                        }                    
                     }
                 }
 
@@ -337,37 +379,44 @@ namespace ConsoleApplication1
                     newfilename = path + seriesName + ".S" + seasonNumber + "E" + episodeNumber + extension;                    
                     if (!File.Exists(newfilename))
                     {
-                        Console.WriteLine("Creating {0}", newfilename);
-                        ////System.IO.File.Copy(@filename, @newfilename);
+                        if (simMode)                        
+                            Console.WriteLine("SIMULATING Creating {0}.", newfilename);
+                                                 
+                        else                        
+                            System.IO.File.Copy(@filename, @newfilename);
 
-                        // Ask user to delete the original
-                        /*
-                        Console.Write("Delete the original file? [y]/n: ");
-                        res = Console.ReadLine();
-                        if (res.Equals("y") || res.Equals("Y") || res.Equals(""))
+                        if (simMode)
+                            Console.WriteLine("SIMULATING Deleting {0} if the user requested.", filename);
+                        else
                         {
-                            FileInfo file = new FileInfo(filename);
-                            if (file.IsReadOnly)
+                            // Ask user to delete the original                        
+                            Console.Write("Delete the original file? [y]/n: ");
+                            res = Console.ReadLine();
+                            if (res.Equals("y") || res.Equals("Y") || res.Equals(""))
                             {
-                                Console.Write("File is Read Only, override and delete? [y]/n: ");
-                                res = Console.ReadLine();
-                                if (res.Equals("y") || res.Equals("Y") || res.Equals(""))
+                                FileInfo file = new FileInfo(filename);
+                                if (file.IsReadOnly)
                                 {
-                                    file.IsReadOnly = false;
-                                    System.IO.File.Delete(@filename);
+                                    Console.Write("File is Read Only, override and delete? [y]/n: ");
+                                    res = Console.ReadLine();
+                                    if (res.Equals("y") || res.Equals("Y") || res.Equals(""))
+                                    {
+                                        file.IsReadOnly = false;
+                                        System.IO.File.Delete(@filename);
+                                    }
                                 }
+                                else
+                                    System.IO.File.Delete(@filename);
                             }
-                            else
-                                System.IO.File.Delete(@filename);
                         }
-                        */
                     }
                     else {
                         Console.WriteLine("File {0} Exists. Ignoring changes.", newfilename);                        
                     }
                 }                                
                 
-                Console.WriteLine("-----------");
+                Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
+                Console.ReadLine();
             }            
               
             //Logoff the BeyondTV server
