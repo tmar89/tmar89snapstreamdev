@@ -10,3 +10,15 @@ C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\BTVRena
 C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\BTVRenamer\BTVRenamer\bin\Debug\BeyondTVLibrary.dll
 C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\BTVRenamer\BTVRenamer\obj\Debug\BTVRenamer.exe
 C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\BTVRenamer\BTVRenamer\obj\Debug\BTVRenamer.pdb
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\obj\Release\BTVRenamer.exe
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\obj\Release\BTVRenamer.pdb
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\bin\Release\BTVRenamer.exe
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\bin\Release\BTVRenamer.pdb
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\bin\Release\BeyondTVLibrary.dll
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\bin\Debug\BTVRenamer.exe
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\bin\Debug\BTVRenamer.pdb
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\bin\Debug\BeyondTVLibrary.dll
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\obj\Debug\BTVRenamer.exe
+C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\obj\Debug\BTVRenamer.pdb
