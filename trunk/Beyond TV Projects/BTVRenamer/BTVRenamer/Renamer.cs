@@ -9,11 +9,12 @@ using BeyondTVLibrary;
 
 namespace ConsoleApplication1
 {
-    class Program
+    class Renamer
     {
         static void Main(string[] args)
         {
-            bool simMode = true;            
+            bool simMode = true;
+            bool unattended = false;
 
             // Bag of all the media files in the BTV Library
             PVSPropertyBag[] mediafiles;
@@ -43,7 +44,12 @@ namespace ConsoleApplication1
             if (password.Equals(""))
                 password = "password";
             Console.WriteLine("Connecting to Beyond TV Server...");
-            PVSPropertyBag lbag = manager.Logon("", username, password);
+            PVSPropertyBag lbag = null;
+            try
+            {
+                lbag = manager.Logon("", username, password);
+            }
+            catch (Exception e) { Console.WriteLine("Cannot log into Beyond TV Server.  Exitting..."); return; }
             string auth = "";
             foreach (PVSProperty pvp in lbag.Properties)
             {
@@ -60,10 +66,13 @@ namespace ConsoleApplication1
             if (!res.Equals("y") && !res.Equals("Y") && !res.Equals(""))
                 simMode = false;
 
-            //Console.Write("Full Debug Mode? y/[n]: ");
-            //res = Console.ReadLine();
-            //if (!res.Equals("n") && !res.Equals("N") && !res.Equals(""))
-            //    fullDebug = true;
+            if (!simMode)
+            {
+                Console.Write("Run Unattended (Unless user input required)? y/[n]: ");
+                res = Console.ReadLine();
+                if (res.Equals("y") || res.Equals("Y"))
+                    unattended = true;
+            }
 
             // Load Library
             BTVLibrary library = new BTVLibrary();
@@ -81,6 +90,7 @@ namespace ConsoleApplication1
                 string channel;
                 string seasonNumber = null;
                 string episodeNumber = null;
+                string episodeTitle = null;
                 string filename = null;
                 string newfilename;
                 string URLString;
@@ -148,6 +158,11 @@ namespace ConsoleApplication1
                             originalAirDate = originalAirDate.Insert(6, "-").Insert(4, "-");
                             Console.WriteLine("Original Air Date: {0}", originalAirDate);
                         }
+                        if (pvp.Name.Equals("EpisodeTitle"))
+                        {
+                            Console.WriteLine("Episode Name: {0}", pvp.Value);
+                            episodeTitle = pvp.Value;
+                        }
                         if (pvp.Name.Equals("Channel"))
                         {
                             Console.WriteLine("Channel: {0}", pvp.Value);
@@ -161,8 +176,9 @@ namespace ConsoleApplication1
                 // Ignore a recorded movie
                 if (foundMovie)
                 {
-                    Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
-                    Console.ReadLine();
+                    //Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
+                    //Console.ReadLine();
+                    Console.WriteLine("---------------------------------------\n");
                     continue;
                 }
 
@@ -172,8 +188,9 @@ namespace ConsoleApplication1
                     if (Regex.IsMatch(filename, "[Ss]+([0-9]+)+[Ee]+([0-9]+)"))
                     {
                         Console.WriteLine("Show already in proper format!");
-                        Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
-                        //nsole.ReadLine();
+                        //Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
+                        //Console.ReadLine();
+                        Console.WriteLine("---------------------------------------\n");
                         continue;
                     }
                 }
@@ -181,10 +198,15 @@ namespace ConsoleApplication1
                 // Ask user if this file should be scraped and renamed since this was deemed a BTV recording
                 if (hasChannel)
                 {
-                    Console.Write("Try to rename this recording? [y]/n: ");
-                    res = Console.ReadLine();
-                    if (res.Equals("y") || res.Equals("Y") || res.Equals(""))
-                        rename = true;                    
+                    if (!unattended)
+                    {
+                        Console.Write("Try to rename this recording? [y]/n: ");
+                        res = Console.ReadLine();
+                        if (res.Equals("y") || res.Equals("Y") || res.Equals(""))
+                            rename = true;
+                    }
+                    else
+                        rename = true;
                 }
 
                 // Check array first
@@ -364,27 +386,64 @@ namespace ConsoleApplication1
                 if (hasChannel && rename && foundSeries && seriesID != null && foundEpisode)
                 {
                     string extension = filename.Substring(filename.LastIndexOf("."));
+                    string filenameNoExt = filename.Remove(filename.LastIndexOf("."));
                     string path = filename.Remove(filename.LastIndexOf("\\")+1);
-                    seriesName = seriesName.Replace(" ", ".");
-                    seriesName = seriesName.Replace("&", "and");
-                    seriesName = seriesName.Replace("\\","");
-                    seriesName = seriesName.Replace("/", "");
-                    seriesName = seriesName.Replace(":", "");
-                    seriesName = seriesName.Replace("*", "");
-                    seriesName = seriesName.Replace("?", "");
-                    seriesName = seriesName.Replace("\"", "");
-                    seriesName = seriesName.Replace("<", "");
-                    seriesName = seriesName.Replace(">", "");
-                    seriesName = seriesName.Replace("|", "");
-                    newfilename = path + seriesName + ".S" + seasonNumber + "E" + episodeNumber + extension;                    
+                    seriesName = Renamer.replaceSpecialChars(seriesName);
+                    episodeTitle = Renamer.replaceSpecialChars(episodeTitle);
+                    string newfilenameNoExt = path + seriesName + ".S" + seasonNumber + "E" + episodeNumber + "." + episodeTitle;
+                    newfilename = newfilenameNoExt + extension;
                     if (!File.Exists(newfilename))
                     {
-                        if (simMode)                        
+                        if (simMode)
                             Console.WriteLine("SIMULATING Creating {0}.", newfilename);
-                                                 
-                        else                        
-                            System.IO.File.Copy(@filename, @newfilename);
+                        else
+                        {
+                            // Add SxxExx to Episode Description if it doesn't exist                            
+                            foreach (PVSProperty pvp in mediafile.Properties)
+                            {
+                                if (pvp.Name.Equals("EpisodeDescription"))
+                                {
+                                    string episodeDescription = pvp.Value;
+                                    if (!(Regex.IsMatch(episodeDescription, "[Ss]+([0-9]+)+[Ee]+([0-9]+)")))
+                                    {
+                                        episodeDescription = "S" + seasonNumber + "E" + episodeNumber + " - " + episodeDescription;
+                                        pvp.Value = episodeDescription;                                                                                                                             
+                                    }
+                                    library.EditMedia(auth, @filename, mediafile);
+                                }
+                            }                           
 
+                            // Copy all files with this filename
+                            // Copy main video file
+                            //System.IO.File.Copy(@filename, @newfilename);                                                        
+                            System.IO.File.Move(@filename, @newfilename);
+                            // Copy chapters xml file                            
+                            string tempsource = filename + ".chapters.xml";
+                            string tempdest = newfilename + ".chapters.xml";
+                            if (File.Exists(tempsource))
+                                //System.IO.File.Copy(@tempsource, tempdest);
+                                System.IO.File.Move(@tempsource, @tempdest);
+                            // Copy edl file
+                            tempsource = filenameNoExt + ".edl";
+                            tempdest = newfilenameNoExt + ".edl";
+                            if (File.Exists(tempsource))
+                                //System.IO.File.Copy(@tempsource, tempdest);
+                                System.IO.File.Move(@tempsource, @tempdest);
+                            // Copy txt file
+                            tempsource = filenameNoExt + ".txt";
+                            tempdest = newfilenameNoExt + ".txt";
+                            if (File.Exists(tempsource))
+                                //System.IO.File.Copy(@tempsource, @tempdest);
+                                System.IO.File.Move(@tempsource, @tempdest);
+                            // Copy log file
+                            tempsource = filenameNoExt + ".log";
+                            tempdest = newfilenameNoExt + ".log";
+                            if (File.Exists(tempsource))
+                                //System.IO.File.Copy(@tempsource, tempdest);
+                                System.IO.File.Move(@tempsource, @tempdest);
+                        }
+
+                        /*
                         if (simMode)
                             Console.WriteLine("SIMULATING Deleting {0} if the user requested.", filename);
                         else
@@ -394,6 +453,7 @@ namespace ConsoleApplication1
                             res = Console.ReadLine();
                             if (res.Equals("y") || res.Equals("Y") || res.Equals(""))
                             {
+                                // Delete Main Video File
                                 FileInfo file = new FileInfo(filename);
                                 if (file.IsReadOnly)
                                 {
@@ -407,23 +467,117 @@ namespace ConsoleApplication1
                                 }
                                 else
                                     System.IO.File.Delete(@filename);
+
+                                // Delete Chapters XML file
+                                string tempsource = filename + ".chapters.xml";
+                                if (File.Exists(tempsource))
+                                {
+                                    file = new FileInfo(tempsource);
+                                    if (file.IsReadOnly)
+                                    {
+                                        Console.Write("File is Read Only, override and delete? [y]/n: ");
+                                        res = Console.ReadLine();
+                                        if (res.Equals("y") || res.Equals("Y") || res.Equals(""))
+                                        {
+                                            file.IsReadOnly = false;
+                                            System.IO.File.Delete(@tempsource);
+                                        }
+                                    }
+                                    else
+                                        System.IO.File.Delete(@tempsource);
+                                }
+
+                                // Delete EDL file
+                                tempsource = filenameNoExt + ".edl";
+                                if (File.Exists(tempsource))
+                                {
+                                    file = new FileInfo(tempsource);
+                                    if (file.IsReadOnly)
+                                    {
+                                        Console.Write("File is Read Only, override and delete? [y]/n: ");
+                                        res = Console.ReadLine();
+                                        if (res.Equals("y") || res.Equals("Y") || res.Equals(""))
+                                        {
+                                            file.IsReadOnly = false;
+                                            System.IO.File.Delete(@tempsource);
+                                        }
+                                    }
+                                    else
+                                        System.IO.File.Delete(@tempsource);
+                                }
+
+                                // Delete TXT file
+                                tempsource = filenameNoExt + ".txt";
+                                if (File.Exists(tempsource))
+                                {
+                                    file = new FileInfo(tempsource);
+                                    if (file.IsReadOnly)
+                                    {
+                                        Console.Write("File is Read Only, override and delete? [y]/n: ");
+                                        res = Console.ReadLine();
+                                        if (res.Equals("y") || res.Equals("Y") || res.Equals(""))
+                                        {
+                                            file.IsReadOnly = false;
+                                            System.IO.File.Delete(@tempsource);
+                                        }
+                                    }
+                                    else
+                                        System.IO.File.Delete(@tempsource);
+                                }
+
+                                // Delete LOG file
+                                tempsource = filenameNoExt + ".log";
+                                if (File.Exists(tempsource))
+                                {
+                                    file = new FileInfo(tempsource);
+                                    if (file.IsReadOnly)
+                                    {
+                                        Console.Write("File is Read Only, override and delete? [y]/n: ");
+                                        res = Console.ReadLine();
+                                        if (res.Equals("y") || res.Equals("Y") || res.Equals(""))
+                                        {
+                                            file.IsReadOnly = false;
+                                            System.IO.File.Delete(@tempsource);
+                                        }
+                                    }
+                                    else
+                                        System.IO.File.Delete(@tempsource);
+                                }
                             }
                         }
+                        */
                     }
                     else {
                         Console.WriteLine("File {0} Exists. Ignoring changes.", newfilename);                        
                     }
                 }                                
                 
-                Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
-                Console.ReadLine();
+                //Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
+                //Console.ReadLine();
+                Console.WriteLine("---------------------------------------\n");
             }            
               
             //Logoff the BeyondTV server
             Console.WriteLine("Finished...logging off");
             manager.Logoff(auth);
             Console.ReadLine();
+        }
 
+        static string replaceSpecialChars(string mystring)
+        {
+            string newstring = mystring;
+            newstring = newstring.Replace(" ", ".");
+            newstring = newstring.Replace("&", "and");
+            newstring = newstring.Replace("\\", "");
+            newstring = newstring.Replace("/", "");
+            newstring = newstring.Replace(":", "");
+            newstring = newstring.Replace("*", "");
+            newstring = newstring.Replace("?", "");
+            newstring = newstring.Replace("\"", "");
+            newstring = newstring.Replace("<", "");
+            newstring = newstring.Replace(">", "");
+            newstring = newstring.Replace("|", "");
+            return newstring;
         }
     }
 }
