@@ -22,3 +22,9 @@ C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Proje
 C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\obj\Debug\ResolveAssemblyReference.cache
 C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\obj\Debug\BTVRenamer.exe
 C:\Documents and Settings\Tommy\My Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\obj\Debug\BTVRenamer.pdb
+C:\Users\Thomas Marullo\Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\obj\Debug\BTVRenamer.exe
+C:\Users\Thomas Marullo\Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\obj\Debug\BTVRenamer.pdb
+C:\Users\Thomas Marullo\Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\bin\Debug\BTVRenamer.exe
+C:\Users\Thomas Marullo\Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\bin\Debug\BTVRenamer.pdb
+C:\Users\Thomas Marullo\Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\bin\Debug\BeyondTVLibrary.dll
+C:\Users\Thomas Marullo\Documents\SnapStream Projects\Beyond TV Projects\BTVRenamer\BTVRenamer\obj\Debug\ResolveAssemblyReference.cache
