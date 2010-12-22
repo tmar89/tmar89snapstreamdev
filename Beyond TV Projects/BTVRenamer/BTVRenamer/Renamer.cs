@@ -28,21 +28,25 @@ namespace ConsoleApplication1
             String res;
 
             // Logon to the BeyondTV server            
-            BTVLicenseManager manager = new BTVLicenseManager();
+            BTVLicenseManager manager = new BTVLicenseManager();            
             // Get server details
+            Console.Write("Enter BeyondTV Server URL [localhost]: ");
+            string serverURL = Console.ReadLine();
+            if (serverURL.Equals(""))
+                serverURL = "localhost";
             Console.Write("Enter BeyondTV Server port [8129]: ");
             string port = Console.ReadLine();
             if (port.Equals(""))
                 port = "8129";
-            manager.Url = "http://127.0.0.1:"+port+"/wsdl/BTVLicenseManager.asmx";
-            Console.Write("Enter BeyondTV Server username [username]: ");
+            manager.Url = "http://" + serverURL + ":" + port + "/wsdl/BTVLicenseManager.asmx";
+            Console.Write("Enter BeyondTV Server username []: ");
             string username = Console.ReadLine();
             if (username.Equals(""))
-                username = "username";
-            Console.Write("Enter BeyondTV Server password [password]: ");
-            string password = Console.ReadLine();
+                username = "";
+            Console.Write("Enter BeyondTV Server password []: ");
+            string password = getPassword();
             if (password.Equals(""))
-                password = "password";
+                password = "";
             Console.WriteLine("Connecting to Beyond TV Server...");
             PVSPropertyBag lbag = null;
             try
@@ -75,8 +79,8 @@ namespace ConsoleApplication1
             }
 
             // Load Library
-            BTVLibrary library = new BTVLibrary();
-            library.Url = "http://127.0.0.1:"+port+"/wsdl/BTVLibrary.asmx";
+            BTVLibrary library = new BTVLibrary();            
+            library.Url = "http://" + serverURL + ":" + port + "/wsdl/BTVLibrary.asmx";
             Console.Write("Retrieving Library... ");
             
             // Get all filenames in library that were recorded by BTV
@@ -116,13 +120,18 @@ namespace ConsoleApplication1
                 bool foundSeries = false;
 
                 // Reset the flag to see if an episode was found
-                bool foundEpisode = false;                               
+                bool foundEpisode = false;
+
+                // Reset the flag to see if the episode was multipart
+                bool multipart = false;                   
 
                 // See if the media has channel info
                 foreach (PVSProperty pvp in mediafile.Properties)
                 {
-                    if (pvp.Name.Equals("Channel"))
-                        hasChannel = true;
+                    if (pvp.Name.Equals("Channel") && pvp.Value.Length > 0)
+                    {
+                        hasChannel = true;                        
+                    }
                     if (pvp.Name.Equals("FullName"))
                     {
                         Console.WriteLine("{1}/{2} File: {0}", pvp.Value, ++mediaCounter, mediafiles.Length);
@@ -252,6 +261,11 @@ namespace ConsoleApplication1
                     {                        
                         Console.WriteLine("No Series Found for '{0}'", seriesName);
                         foundSeries = false;
+                        if (!unattended)
+                        {
+                            Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
+                            Console.ReadLine();
+                        }
                     }
                     else if (seriesCount == 1) // Found one show
                     {
@@ -260,7 +274,7 @@ namespace ConsoleApplication1
                     }
                     else // Found multiple shows
                     {                        
-                        Console.WriteLine("Found Multiple Shows: {0}", seriesCount);
+                        Console.WriteLine("Found Multiple Series: {0}", seriesCount);
                         // Show all the series found
                         for (int i = 0; i < seriesNamesList.Count; i++)
                         {
@@ -340,10 +354,54 @@ namespace ConsoleApplication1
                         }
                     }                                       
                     // Check to see how many matches were found
-                    if (dateMatches <= 0) // No Matches Found
+                    if (dateMatches <= 0) // No Matches Found, so maybe the air date was wrong
                     {
                         Console.WriteLine("No Episodes found for Original Air Date {0}", originalAirDate);
-                        foundEpisode = false;
+                        Console.Write("Manually choose episode from list? [y]/n: ");
+                        res = Console.ReadLine();
+                        bool chooseEpisode;
+                        if (res.Equals("") || res.Equals("y") || res.Equals("Y"))
+                            chooseEpisode = true;
+                        else
+                            chooseEpisode = false;
+
+                        // Show all the episodes found                        
+                        if (chooseEpisode)
+                        {
+                            seasonSearch = new string[episodeCount];
+                            episodeSearch = new string[episodeCount];
+                            episodeNameSearch = new string[episodeCount];
+                            for (int i = 0; i < episodeCount; i++)
+                            {
+                                seasonSearch[i] = episodeList.Item(i).SelectSingleNode("SeasonNumber").InnerText.ToString();
+                                episodeSearch[i] = episodeList.Item(i).SelectSingleNode("EpisodeNumber").InnerText.ToString();
+                                episodeNameSearch[i] = episodeList.Item(i).SelectSingleNode("EpisodeName").InnerText.ToString();
+                                Console.WriteLine(" " + (i + 1).ToString() + " : '{0}' S{1}E{2}", episodeNameSearch[i], (int.Parse(seasonSearch[i])).ToString("D2"), (int.Parse(episodeSearch[i])).ToString("D2")); 
+                            }
+
+                            // Ask user to select a show or 0 to skip                        
+                            Console.Write("Select an Episode to use or enter 0 to skip [0]: ");
+                            res = Console.ReadLine();
+                            if (res.Equals(""))
+                                episodeIndex = -1;
+                            else
+                                episodeIndex = int.Parse(res) - 1;
+                            // Check if > 0 to see if the user picked a series
+                            if (episodeIndex > -1)
+                            {
+                                Console.WriteLine("Using '{0}' S{1}E{2}'", episodeNameSearch[episodeIndex], (int.Parse(seasonSearch[episodeIndex])).ToString("D2"), (int.Parse(episodeSearch[episodeIndex])).ToString("D2"));
+                                seasonNumber = (int.Parse(seasonSearch[episodeIndex])).ToString("D2");
+                                episodeNumber = (int.Parse(episodeSearch[episodeIndex])).ToString("D2");
+                                foundEpisode = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ignoring Episode Search");
+                                foundEpisode = false;
+                            }                            
+                        }
+                        else
+                            foundEpisode = false;
                     }
                     else if (dateMatches == 1) // Found one match
                     {
@@ -360,20 +418,55 @@ namespace ConsoleApplication1
                             Console.WriteLine(" " + (i + 1).ToString() + " : '{0}' S{1}E{2}", episodeNameSearch[i], (int.Parse(seasonSearch[i])).ToString("D2"), (int.Parse(episodeSearch[i])).ToString("D2")); 
                         }                                                
                         // Ask user to select a show or 0 to skip                        
-                        Console.Write("Select an Episode to use or enter 0 to skip [1]: ");
+                        Console.Write("Select an Episode to use, 'cXX..X' to combine multipart (ie: c124) or enter 0 to skip [1]: ");
                         res = Console.ReadLine();
                         if (res.Equals(""))
                             episodeIndex = 0;
-                        else 
-                            episodeIndex = int.Parse(res) - 1;
+                        else
+                        {
+                            // Check if selected single episode or multipart
+                            if (res.Length == 1)
+                                episodeIndex = int.Parse(res) - 1;
+                            else
+                            {
+                                // Set a flag for multiple episodes
+                                multipart = true;
+
+                                // Check if c, if not set episodeIndex to -1
+                                if (res[0].Equals('c'))
+                                {                                    
+                                    // Parse out the selections
+                                    char[] episodes = res.Substring(1).ToCharArray();                                    
+                                    for (int i = 0; i < episodes.Length; i++)
+                                    {              
+                                        // Parse out the index
+                                        int episodeIndexNumber = int.Parse(episodes[i].ToString())-1;
+
+                                        // Look up the episode numbers
+                                        if (i == 0)
+                                            episodeNumber = (int.Parse(episodeSearch[episodeIndexNumber])).ToString("D2");
+                                        else
+                                            episodeNumber = episodeNumber + "-" + (int.Parse(episodeSearch[episodeIndexNumber])).ToString("D2");
+
+                                        // Show what has been used
+                                        Console.WriteLine("Using '{0}' S{1}E{2}'", episodeNameSearch[episodeIndexNumber], (int.Parse(seasonSearch[episodeIndexNumber])).ToString("D2"), (int.Parse(episodeSearch[episodeIndexNumber])).ToString("D2"));
+                                        seasonNumber = (int.Parse(seasonSearch[episodeIndexNumber])).ToString("D2");
+                                    }                                                                                                                                                   
+                                }
+                                else
+                                    episodeIndex = -1;                                
+                            }
+                        }
                         // Check if > 0 to see if the user picked a series
-                        if (episodeIndex > -1)
+                        if (episodeIndex > -1 && !multipart)
                         {
                             Console.WriteLine("Using '{0}' S{1}E{2}'", episodeNameSearch[episodeIndex], (int.Parse(seasonSearch[episodeIndex])).ToString("D2"), (int.Parse(episodeSearch[episodeIndex])).ToString("D2"));
                             seasonNumber = (int.Parse(seasonSearch[episodeIndex])).ToString("D2");
                             episodeNumber = (int.Parse(episodeSearch[episodeIndex])).ToString("D2");
                             foundEpisode = true;
                         }
+                        else if (multipart)
+                            foundEpisode = true;
                         else
                         {
                             Console.WriteLine("Ignoring Episode Search");
@@ -389,7 +482,7 @@ namespace ConsoleApplication1
                     string filenameNoExt = filename.Remove(filename.LastIndexOf("."));
                     string path = filename.Remove(filename.LastIndexOf("\\")+1);
                     seriesName = Renamer.replaceSpecialChars(seriesName);
-                    episodeTitle = Renamer.replaceSpecialChars(episodeTitle);
+                    episodeTitle = Renamer.replaceSpecialChars(episodeTitle);                    
                     string newfilenameNoExt = path + seriesName + ".S" + seasonNumber + "E" + episodeNumber + "." + episodeTitle;
                     newfilename = newfilenameNoExt + extension;
                     if (!File.Exists(newfilename))
@@ -440,8 +533,11 @@ namespace ConsoleApplication1
                             tempdest = newfilenameNoExt + ".log";
                             if (File.Exists(tempsource))
                                 //System.IO.File.Copy(@tempsource, tempdest);
-                                System.IO.File.Move(@tempsource, @tempdest);
-                        }
+                                System.IO.File.Move(@tempsource, @tempdest);                           
+                        }                        
+                    }
+                    else {
+                        Console.WriteLine("File {0} Exists. Ignoring changes.", newfilename);                        
 
                         /*
                         if (simMode)
@@ -547,13 +643,13 @@ namespace ConsoleApplication1
                         }
                         */
                     }
-                    else {
-                        Console.WriteLine("File {0} Exists. Ignoring changes.", newfilename);                        
+
+                    if (!unattended)
+                    {
+                        Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
+                        Console.ReadLine();
                     }
-                }                                
-                
-                //Console.WriteLine("-----------PRESS ANY KEY TO CONTINUE-----------");
-                //Console.ReadLine();
+                }                                                                
                 Console.WriteLine("---------------------------------------\n");
             }            
               
@@ -578,6 +674,33 @@ namespace ConsoleApplication1
             newstring = newstring.Replace(">", "");
             newstring = newstring.Replace("|", "");
             return newstring;
+        }
+
+        static string getPassword()
+        {            
+            string password = "";
+            ConsoleKeyInfo info = Console.ReadKey(true);
+            while (info.Key != ConsoleKey.Enter)
+            {
+                if (info.Key != ConsoleKey.Backspace)
+                {
+                    password += info.KeyChar;
+                    info = Console.ReadKey(true);
+                }
+                else if (info.Key == ConsoleKey.Backspace)
+                {
+                    if (!string.IsNullOrEmpty(password))
+                    {
+                        password = password.Substring
+                        (0, password.Length - 1);
+                    }
+                    info = Console.ReadKey(true);
+                }
+            }
+            for (int i = 0; i < password.Length; i++)
+                Console.Write("*");
+            Console.WriteLine();
+            return password;
         }
     }
 }
