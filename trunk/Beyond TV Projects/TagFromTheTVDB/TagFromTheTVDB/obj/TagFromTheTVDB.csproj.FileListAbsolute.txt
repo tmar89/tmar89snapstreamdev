@@ -1,8 +1,0 @@
-C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\obj\Release\ResolveAssemblyReference.cache
-C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Release\TagFromTheTVDB.dll
-C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Release\TagFromTheTVDB.pdb
-C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Release\BTVShowInfoPluginInterface.dll
-C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Release\BTVShowInfoPluginInterface.pdb
-C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\bin\Release\BTVShowInfoPluginInterface.xml
-C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\obj\Release\TagFromTheTVDB.dll
-C:\Documents and Settings\Tommy\My Documents\Visual Studio 2005\Projects\TagFromTheTVDB\TagFromTheTVDB\obj\Release\TagFromTheTVDB.pdb
