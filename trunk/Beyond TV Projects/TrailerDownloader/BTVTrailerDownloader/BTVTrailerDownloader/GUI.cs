@@ -170,91 +170,47 @@ namespace BTVTrailerDownloader
                 SetStatus(statusWindow, "Will try to log on again in 10 seconds");
                 hourTimer.Change(10000, 1000 * 60 * 60 * 4);
                 scanner.Abort();
-            }            
+            }
 
-            // List to save movies to db file            
-            List<string> downloadedTrailers = new List<string>();
-            ObjectToSerialize trailerDBobject = new ObjectToSerialize();
-            trailerDBobject.DownloadedTrailers = downloadedTrailers;
-
-            // Scan for trailers
-            SetStatus(statusWindow, "Scanning for new Trailers");            
-            string URL = "http://www.trailerfreaks.com/";
-            HttpWebRequest webreq = (HttpWebRequest)WebRequest.Create(new System.Uri(URL));
-            HttpWebResponse webres = (HttpWebResponse)webreq.GetResponse();
-            Stream resStream = webres.GetResponseStream();            
-            string response = new StreamReader(resStream).ReadToEnd();
-            // Find trailer
-            string trailerStart = "a href =\"trai"; string toFind; string trailerName; string trailerDescription;
-            string trailerDate; string trailerActors; string trailerNameClean; string trailerDetailsURL;
-            int startindex, endindex;            
-            int numToGet = 10000;
-            if (!numTrailersToGet.Equals("All"))
-                numToGet = int.Parse(numTrailersToGet);
-            int count = 0;
-            while ((startindex = response.IndexOf(trailerStart)) > -1 && count < numToGet)
+            try
             {
-                bool skip = false;
+                // List to save movies to db file            
+                List<string> downloadedTrailers = new List<string>();
+                ObjectToSerialize trailerDBobject = new ObjectToSerialize();
+                trailerDBobject.DownloadedTrailers = downloadedTrailers;
 
-                if (startindex > -1)
+                // Scan for trailers
+                SetStatus(statusWindow, "Scanning for new Trailers");
+                string URL = "http://www.trailerfreaks.com/";
+                HttpWebRequest webreq = (HttpWebRequest)WebRequest.Create(new System.Uri(URL));
+                HttpWebResponse webres = (HttpWebResponse)webreq.GetResponse();
+                Stream resStream = webres.GetResponseStream();
+                string response = new StreamReader(resStream).ReadToEnd();
+                // Find trailer
+                string trailerStart = "a href =\"trai"; string toFind; string trailerName; string trailerDescription;
+                string trailerDate; string trailerActors; string trailerNameClean; string trailerDetailsURL;
+                int startindex, endindex;
+                //int numToGet = 10000;
+                //if (!numTrailersToGet.Equals("All"))
+                //    numToGet = int.Parse(numTrailersToGet);
+                //int count = 0;
+                //while ((startindex = response.IndexOf(trailerStart)) > -1 && count < numToGet)
+                while ((startindex = response.IndexOf(trailerStart)) > -1)
                 {
-                    response = response.Substring(startindex);
-                }
-                else
-                {
-                    SetStatus(statusWindow, "Error parsing for New Trailers");
-                    SetStatus(statusWindow, "Scanning aborted.");
-                    enableControls(true);
-                    scanner.Abort();
-                }
-                toFind = "title=\"";
-                startindex = response.IndexOf(toFind);
-                if (startindex > -1)
-                {
-                    startindex += toFind.Length; // Move to starting position of new Trailer
-                }
-                else
-                {                 
-                    SetStatus(statusWindow, "Error parsing for Trailer Name");
-                    continue;
-                }
-                endindex = response.IndexOf("\"", startindex);
-                trailerName = response.Substring(startindex, endindex - startindex).Trim();
-                // Remove Year
-                trailerName = trailerName.Remove(trailerName.LastIndexOf(" "));
-                trailerNameClean = replaceSpecials(trailerName);
-                trailerNameClean = trailerNameClean.Remove(trailerNameClean.LastIndexOf(" "));
-                SetStatus(statusWindow, "Found Trailer: " + trailerName);
-                response = response.Substring(endindex);
+                    bool skip = false;
 
-                // Check if it exists already in flat file
-                string trailerDB = Application.StartupPath + "\\trailerDB.txt";
-                if (!File.Exists(trailerDB))
-                {
-                    if (verbose) 
-                        SetStatus(statusWindow, "New DB Created and will add Trailer after successfull download");
-                }
-                else
-                {
-                    Serializer serializer = new Serializer();
-                    trailerDBobject = serializer.DeSerializeObject(Application.StartupPath + "\\trailerDB.txt");
-                    downloadedTrailers = trailerDBobject.DownloadedTrailers;
-                    if (downloadedTrailers.Contains(trailerName + GetText(formatBox)))
+                    if (startindex > -1)
                     {
-                        SetStatus(statusWindow, "Already Downloaded, Skipping Trailer");
-                        skip = true;
+                        response = response.Substring(startindex);
                     }
                     else
                     {
-                        if (verbose) 
-                            SetStatus(statusWindow, "Not in DB will add Trailer after successfull download");
+                        SetStatus(statusWindow, "Error Finding Trailer Page Links");
+                        SetStatus(statusWindow, "Scanning aborted.");
+                        enableControls(true);
+                        scanner.Abort();
                     }
-                }
-
-                if (!skip)
-                {
-                    // Get description
-                    toFind = "<a href=\"";
+                    toFind = "title=\"";
                     startindex = response.IndexOf(toFind);
                     if (startindex > -1)
                     {
@@ -262,235 +218,289 @@ namespace BTVTrailerDownloader
                     }
                     else
                     {
-                        SetStatus(statusWindow, "Error parsing for Trailer Details URL");
-                        continue; 
+                        SetStatus(statusWindow, "Error parsing for Trailer Name");
+                        continue;
                     }
                     endindex = response.IndexOf("\"", startindex);
-                    trailerDetailsURL = "http://www.trailerfreaks.com/" + response.Substring(startindex, endindex - startindex).Trim();
-                    if (verbose) 
-                        SetStatus(statusWindow, "Found Detailed Page URL: " + trailerDetailsURL);
-                    response = response.Substring(endindex);
-                    // Open new URL to get description
-                    HttpWebRequest webreqDesc = (HttpWebRequest)WebRequest.Create(new System.Uri(trailerDetailsURL));
-                    HttpWebResponse webresDesc = (HttpWebResponse)webreqDesc.GetResponse();
-                    Stream resStreamDesc = webresDesc.GetResponseStream();
-                    string responseDesc = new StreamReader(resStreamDesc).ReadToEnd();
-                    toFind = "class=\"plot\">";
-                    int startindexDesc = responseDesc.IndexOf(toFind);
-                    if (startindexDesc > -1)
-                    {
-                        startindexDesc += toFind.Length; // Move to starting position of new Trailer
-                    }
-                    else
-                    {
-                        SetStatus(statusWindow, "Error parsing for Trailer Description");
-                        continue; 
-                    }
-                    int endindexDesc = responseDesc.IndexOf("</td>", startindexDesc);
-                    trailerDescription = responseDesc.Substring(startindexDesc, endindexDesc - startindexDesc).Trim();
-
-                    // Find date
-                    toFind = "trailer\" title=\"";
-                    startindex = response.IndexOf(toFind);
-                    if (startindex > -1)
-                    {
-                        startindex += toFind.Length; // Move to starting position of new Trailer
-                    }
-                    else
-                    {
-                        SetStatus(statusWindow, "Error parsing for Trailer Date");
-                        continue; 
-                    }
-                    endindex = startindex + 10;
-                    trailerDate = response.Substring(startindex, endindex - startindex).Trim();
-                    if (verbose) 
-                        SetStatus(statusWindow, "Found Date: " + trailerDate);
+                    trailerName = response.Substring(startindex, endindex - startindex).Trim();
+                    // Remove Year
+                    trailerName = trailerName.Remove(trailerName.LastIndexOf(" "));
+                    trailerNameClean = replaceSpecials(trailerName);
+                    trailerNameClean = trailerNameClean.Remove(trailerNameClean.LastIndexOf(" "));
+                    SetStatus(statusWindow, "Found Trailer: " + trailerName);
                     response = response.Substring(endindex);
 
-
-                    // Find Actors
-                    toFind = "trailer\" alt=\"";
-                    startindex = response.IndexOf(toFind);
-                    if (startindex > -1)
+                    // Check if it exists already in flat file
+                    string trailerDB = Application.StartupPath + "\\trailerDB.txt";
+                    if (!File.Exists(trailerDB))
                     {
-                        startindex += toFind.Length; // Move to starting position of new Trailer
-                    }
-                    else
-                    {
-                        SetStatus(statusWindow, "Error parsing for Trailer Actors");
-                        continue; 
-                    }
-                    endindex = response.IndexOf("\"", startindex);
-                    trailerActors = response.Substring(startindex, endindex - startindex).Trim();
-                    if (verbose) 
-                        SetStatus(statusWindow, "Found Actors: " + trailerActors);
-                    response = response.Substring(endindex);
-
-                    // Find MOV file
-                    toFind = "class=\"trailerlink\">" + GetText(formatBox).ToUpper() + "</a>";
-                    startindex = response.IndexOf(toFind);
-                    if (startindex > -1)
-                    {
-                        startindex -= 250; // Move to starting position of new Trailer file
-                    }
-                    else
-                    {
-                        SetStatus(statusWindow, "Error parsing for Trailer File");
-                        continue; 
-                    }
-                    toFind = "<a href=\"";
-                    startindex = response.IndexOf(toFind, startindex);
-                    if (startindex > -1)
-                    {
-                        startindex += toFind.Length; // Move to starting position of new Trailer
-                    }
-                    else
-                    {
-                        SetStatus(statusWindow, "Error parsing for Trailer File");
-                        continue; 
-                    }
-                    endindex = response.IndexOf("\"", startindex);
-                    trailerURL = response.Substring(startindex, endindex - startindex).Trim();
-                    if (verbose) 
-                        SetStatus(statusWindow, "Found URL: " + trailerURL);
-                    response = response.Substring(endindex + 250);
-                    
-                    movFile = GetText(locationBox) + "\\" + trailerNameClean + "." + GetText(formatBox) + ".mov";
-                    string mp4File = GetText(locationBox) + "\\" + trailerNameClean + "." + GetText(formatBox) + ".mp4";
-                    if (verbose) 
-                        SetStatus(statusWindow, "Downloading Trailer File");
-                    //WebClient Client = new WebClient();
-                    //bool downloadSuccess = true;
-                    //try
-                    //{
-                    //    Client.DownloadFile(trailerURL, movFile);
-                    //}
-                    //catch (Exception e)
-                    //{
-                    //    SetStatus(statusWindow, "Error Downloading.  Try again next time.");
-                    //    downloadSuccess = false;
-                    //}                    
-                    downloader = new Thread(new ThreadStart(DownloadFile));
-                    downloader.Start();
-                    SetStatus(statusWindow, "\r\nDownloading");
-                    while (downloader.IsAlive) 
-                    {
-                        Thread.Sleep(1000);                        
-                        SetStatusDownloading(statusWindow, ".");
-                        if (GetText(scanButton) == "Scan")
-                        {
-                            SetStatus(statusWindow, "Download canceled");
-                            downloader.Abort();
-                            break;
-                        }
-                    }                    
-                    downloader.Join();
-                    downloader = null;
-                    if (downloadSuccess)
-                    {
-                        SetStatus(statusWindow, "\r\nDownload Completed");
-                        if (verbose) 
-                            SetStatus(statusWindow, "Converting to MP4");
-                        // Convert using ffmpeg to mp4
-                        string ffmpegPath = Application.StartupPath + "\\ffmpeg.exe";
-                        string ffmpegParams = " -y -i \"" + movFile + "\" -vcodec copy -acodec copy \"" + mp4File + "\"";
                         if (verbose)
-                        {
-                            SetStatus(statusWindow, ffmpegPath);
-                            SetStatus(statusWindow, ffmpegParams);
-                        }
-                        Process ffmpeg = new Process();
-                        ffmpeg.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                        ffmpeg.StartInfo.FileName = ffmpegPath;
-                        ffmpeg.StartInfo.Arguments = ffmpegParams;
-                        //ffmpeg.StartInfo.FileName = "cmd.exe";
-                        //ffmpeg.StartInfo.Arguments = "/k " + ffmpegPath + " " + ffmpegParams;                
-                        ffmpeg.Start();
-                        ffmpeg.WaitForExit();
-                        System.IO.File.Delete(@movFile);
-                        if (verbose) 
-                            SetStatus(statusWindow, "Conversion Completed");           
-
-                        // Add to database file
-                        downloadedTrailers.Add(trailerName + GetText(formatBox));
+                            SetStatus(statusWindow, "New DB Created and will add Trailer after successfull download");
+                    }
+                    else
+                    {
                         Serializer serializer = new Serializer();
-                        serializer.SerializeObject(Application.StartupPath + "\\trailerDB.txt", trailerDBobject);
-
-                        // Wait a second
-                        Thread.Sleep(1000);
-
-                        // Import metadata
-                        // Find file
-                        PVSPropertyBag[] unknownFiles = library.GetItemsBySeries(auth, "Unknown");
-                        foreach (PVSPropertyBag mediafile in unknownFiles)
+                        trailerDBobject = serializer.DeSerializeObject(Application.StartupPath + "\\trailerDB.txt");
+                        downloadedTrailers = trailerDBobject.DownloadedTrailers;
+                        if (downloadedTrailers.Contains(trailerName + GetText(formatBox)))
                         {
-                            foreach (PVSProperty pvp1 in mediafile.Properties)
+                            SetStatus(statusWindow, "Already Downloaded, Skipping Trailer");
+                            skip = true;
+                        }
+                        else
+                        {
+                            if (verbose)
+                                SetStatus(statusWindow, "Not in DB will add Trailer after successfull download");
+                        }
+                    }
+
+                    if (!skip)
+                    {
+                        // Get description
+                        toFind = "<a href=\"";
+                        startindex = response.IndexOf(toFind);
+                        if (startindex > -1)
+                        {
+                            startindex += toFind.Length; // Move to starting position of new Trailer
+                        }
+                        else
+                        {
+                            SetStatus(statusWindow, "Error parsing for Trailer Details URL");
+                            continue;
+                        }
+                        endindex = response.IndexOf("\"", startindex);
+                        trailerDetailsURL = "http://www.trailerfreaks.com/" + response.Substring(startindex, endindex - startindex).Trim();
+                        if (verbose)
+                            SetStatus(statusWindow, "Found Detailed Page URL: " + trailerDetailsURL);
+                        response = response.Substring(endindex);
+                        // Open new URL to get description
+                        HttpWebRequest webreqDesc = (HttpWebRequest)WebRequest.Create(new System.Uri(trailerDetailsURL));
+                        HttpWebResponse webresDesc = (HttpWebResponse)webreqDesc.GetResponse();
+                        Stream resStreamDesc = webresDesc.GetResponseStream();
+                        string responseDesc = new StreamReader(resStreamDesc).ReadToEnd();
+                        toFind = "class=\"plot\">";
+                        int startindexDesc = responseDesc.IndexOf(toFind);
+                        if (startindexDesc > -1)
+                        {
+                            startindexDesc += toFind.Length; // Move to starting position of new Trailer
+                        }
+                        else
+                        {
+                            SetStatus(statusWindow, "Error parsing for Trailer Description");
+                            continue;
+                        }
+                        int endindexDesc = responseDesc.IndexOf("</td>", startindexDesc);
+                        trailerDescription = responseDesc.Substring(startindexDesc, endindexDesc - startindexDesc).Trim();
+
+                        // Find date
+                        toFind = "trailer\" title=\"";
+                        startindex = response.IndexOf(toFind);
+                        if (startindex > -1)
+                        {
+                            startindex += toFind.Length; // Move to starting position of new Trailer
+                        }
+                        else
+                        {
+                            SetStatus(statusWindow, "Error parsing for Trailer Date");
+                            continue;
+                        }
+                        endindex = startindex + 10;
+                        trailerDate = response.Substring(startindex, endindex - startindex).Trim();
+                        if (verbose)
+                            SetStatus(statusWindow, "Found Date: " + trailerDate);
+                        response = response.Substring(endindex);
+
+
+                        // Find Actors
+                        toFind = "trailer\" alt=\"";
+                        startindex = response.IndexOf(toFind);
+                        if (startindex > -1)
+                        {
+                            startindex += toFind.Length; // Move to starting position of new Trailer
+                        }
+                        else
+                        {
+                            SetStatus(statusWindow, "Error parsing for Trailer Actors");
+                            continue;
+                        }
+                        endindex = response.IndexOf("\"", startindex);
+                        trailerActors = response.Substring(startindex, endindex - startindex).Trim();
+                        if (verbose)
+                            SetStatus(statusWindow, "Found Actors: " + trailerActors);
+                        response = response.Substring(endindex);
+
+                        // Find MOV file
+                        toFind = "class=\"trailerlink\">" + GetText(formatBox).ToUpper() + "</a>";
+                        startindex = response.IndexOf(toFind);
+                        if (startindex > -1)
+                        {
+                            startindex -= 250; // Move to starting position of new Trailer file
+                        }
+                        else
+                        {
+                            SetStatus(statusWindow, "Error parsing for Trailer File");
+                            continue;
+                        }
+                        toFind = "<a href=\"";
+                        startindex = response.IndexOf(toFind, startindex);
+                        if (startindex > -1)
+                        {
+                            startindex += toFind.Length; // Move to starting position of new Trailer
+                        }
+                        else
+                        {
+                            SetStatus(statusWindow, "Error parsing for Trailer File");
+                            continue;
+                        }
+                        endindex = response.IndexOf("\"", startindex);
+                        trailerURL = response.Substring(startindex, endindex - startindex).Trim();
+                        if (verbose)
+                            SetStatus(statusWindow, "Found URL: " + trailerURL);
+                        response = response.Substring(endindex + 250);
+
+                        movFile = GetText(locationBox) + "\\" + trailerNameClean + "." + GetText(formatBox) + ".mov";
+                        string mp4File = GetText(locationBox) + "\\" + trailerNameClean + "." + GetText(formatBox) + ".mp4";
+                        if (verbose)
+                            SetStatus(statusWindow, "Downloading Trailer File");
+                        //WebClient Client = new WebClient();
+                        //bool downloadSuccess = true;
+                        //try
+                        //{
+                        //    Client.DownloadFile(trailerURL, movFile);
+                        //}
+                        //catch (Exception e)
+                        //{
+                        //    SetStatus(statusWindow, "Error Downloading.  Try again next time.");
+                        //    downloadSuccess = false;
+                        //}                    
+                        downloader = new Thread(new ThreadStart(DownloadFile));
+                        downloader.Start();
+                        SetStatus(statusWindow, "\r\nDownloading");
+                        while (downloader.IsAlive)
+                        {
+                            Thread.Sleep(1000);
+                            SetStatusDownloading(statusWindow, ".");
+                            if (GetText(scanButton) == "Scan")
                             {
-                                if (pvp1.Name.Equals("FullName"))
+                                SetStatus(statusWindow, "Download canceled");
+                                downloader.Abort();
+                                break;
+                            }
+                        }
+                        downloader.Join();
+                        downloader = null;
+                        if (downloadSuccess)
+                        {
+                            SetStatus(statusWindow, "\r\nDownload Completed");
+                            if (verbose)
+                                SetStatus(statusWindow, "Converting to MP4");
+                            // Convert using ffmpeg to mp4
+                            string ffmpegPath = Application.StartupPath + "\\ffmpeg.exe";
+                            string ffmpegParams = " -y -i \"" + movFile + "\" -vcodec copy -acodec copy \"" + mp4File + "\"";
+                            if (verbose)
+                            {
+                                SetStatus(statusWindow, ffmpegPath);
+                                SetStatus(statusWindow, ffmpegParams);
+                            }
+                            Process ffmpeg = new Process();
+                            ffmpeg.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                            ffmpeg.StartInfo.FileName = ffmpegPath;
+                            ffmpeg.StartInfo.Arguments = ffmpegParams;
+                            //ffmpeg.StartInfo.FileName = "cmd.exe";
+                            //ffmpeg.StartInfo.Arguments = "/k " + ffmpegPath + " " + ffmpegParams;                
+                            ffmpeg.Start();
+                            ffmpeg.WaitForExit();
+                            System.IO.File.Delete(@movFile);
+                            if (verbose)
+                                SetStatus(statusWindow, "Conversion Completed");
+
+                            // Add to database file
+                            downloadedTrailers.Add(trailerName + GetText(formatBox));
+                            Serializer serializer = new Serializer();
+                            serializer.SerializeObject(Application.StartupPath + "\\trailerDB.txt", trailerDBobject);
+
+                            // Wait for 5 seconds
+                            Thread.Sleep(5000);
+
+                            // Import metadata
+                            // Find file
+                            library = new BTVLibrary();
+                            library.Url = "http://" + serverURL + ":" + port + "/wsdl/BTVLibrary.asmx";
+                            PVSPropertyBag[] unknownFiles = library.GetItemsBySeries(auth, "Unknown");
+                            foreach (PVSPropertyBag mediafile in unknownFiles)
+                            {
+                                foreach (PVSProperty pvp1 in mediafile.Properties)
                                 {
-                                    string filename = pvp1.Value;                                    
-                                    if (filename.Equals(mp4File))
+                                    if (pvp1.Name.Equals("FullName"))
                                     {
-                                        if (verbose)
-                                            SetStatus(statusWindow, "Found File in BTV Library");
-                                        List<PVSProperty> propList = new List<PVSProperty>();
+                                        string filename = pvp1.Value;
+                                        if (filename.Equals(mp4File))
+                                        {
+                                            if (verbose)
+                                                SetStatus(statusWindow, "Found File in BTV Library");
+                                            List<PVSProperty> propList = new List<PVSProperty>();
 
-                                        PVSProperty pTitle = new PVSProperty();
-                                        pTitle.Name = "Title";
-                                        pTitle.Value = "Movie Trailers";
-                                        propList.Add(pTitle);                                        
+                                            PVSProperty pTitle = new PVSProperty();
+                                            pTitle.Name = "Title";
+                                            pTitle.Value = "Movie Trailers";
+                                            propList.Add(pTitle);
 
-                                        PVSProperty pEpisodeTitle = new PVSProperty();
-                                        pEpisodeTitle.Name = "EpisodeTitle";
-                                        pEpisodeTitle.Value = String.Empty;
-                                        propList.Add(pEpisodeTitle);                                        
+                                            PVSProperty pEpisodeTitle = new PVSProperty();
+                                            pEpisodeTitle.Name = "EpisodeTitle";
+                                            pEpisodeTitle.Value = String.Empty;
+                                            propList.Add(pEpisodeTitle);
 
-                                        PVSProperty pDisplayTitle = new PVSProperty();
-                                        pDisplayTitle.Name = "DisplayTitle";
-                                        pDisplayTitle.Value = trailerName;
-                                        propList.Add(pDisplayTitle);
-                                        if (verbose)
-                                            SetStatus(statusWindow, "Injected Title: " + pDisplayTitle.Value);
+                                            PVSProperty pDisplayTitle = new PVSProperty();
+                                            pDisplayTitle.Name = "DisplayTitle";
+                                            pDisplayTitle.Value = trailerName;
+                                            propList.Add(pDisplayTitle);
+                                            if (verbose)
+                                                SetStatus(statusWindow, "Injected Title: " + pDisplayTitle.Value);
 
-                                        PVSProperty pEpisodeDescription = new PVSProperty();
-                                        pEpisodeDescription.Name = "EpisodeDescription";
-                                        pEpisodeDescription.Value = "[" + GetText(formatBox) + "] " + trailerDescription;
-                                        propList.Add(pEpisodeDescription);
+                                            PVSProperty pEpisodeDescription = new PVSProperty();
+                                            pEpisodeDescription.Name = "EpisodeDescription";
+                                            pEpisodeDescription.Value = "[" + GetText(formatBox) + "] " + trailerDescription;
+                                            propList.Add(pEpisodeDescription);
 
-                                        PVSProperty pActors = new PVSProperty();
-                                        pActors.Name = "Actors";
-                                        pActors.Value = trailerActors;
-                                        propList.Add(pActors);
+                                            PVSProperty pActors = new PVSProperty();
+                                            pActors.Name = "Actors";
+                                            pActors.Value = trailerActors;
+                                            propList.Add(pActors);
 
-                                        PVSProperty pDate = new PVSProperty();
-                                        pDate.Name = "OriginalAirDate";
-                                        pDate.Value = trailerDate.Replace("-", "");
-                                        propList.Add(pDate);
-                                        if (verbose)
-                                            SetStatus(statusWindow, "Injected Date: " + pDate.Value);
+                                            PVSProperty pDate = new PVSProperty();
+                                            pDate.Name = "OriginalAirDate";
+                                            pDate.Value = trailerDate.Replace("-", "");
+                                            propList.Add(pDate);
+                                            if (verbose)
+                                                SetStatus(statusWindow, "Injected Date: " + pDate.Value);
 
-                                        PVSPropertyBag bag = new PVSPropertyBag();
-                                        bag.Properties = (PVSProperty[])propList.ToArray();
+                                            PVSPropertyBag bag = new PVSPropertyBag();
+                                            bag.Properties = (PVSProperty[])propList.ToArray();
 
-                                        library.EditMedia(auth, @filename, bag);
-                                        if (verbose) 
-                                            SetStatus(statusWindow, "Metadata Injected");
+                                            library.EditMedia(auth, @filename, bag);
+                                            if (verbose)
+                                                SetStatus(statusWindow, "Metadata Injected");
+                                        }
                                     }
                                 }
                             }
                         }
-                    }                    
-                }
+                    }
 
-                // Abort if unchecked
-                if (GetText(scanButton) == "Scan")
-                {
-                    SetStatus(statusWindow, "Scanning aborted.");
-                    enableControls(true);
-                    scanner.Abort();                                       
-                }
+                    // Abort if unchecked
+                    if (GetText(scanButton) == "Scan")
+                    {
+                        SetStatus(statusWindow, "Scanning aborted.");
+                        enableControls(true);
+                        scanner.Abort();
+                    }
 
-                count++;
+                    count++;
+                }
+            }
+            catch (Exception e)
+            {
+                SetStatus(statusWindow, "Major Error: " + e.ToString());
             }
 
             // Done, for now
